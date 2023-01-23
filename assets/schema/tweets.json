@@ -1,0 +1,25 @@
+{
+  "tweetsSearchRecent": {
+    "fields": [
+      {
+        "name": "query",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "max_results",
+        "type": "int",
+        "required": false
+      }
+    ]
+  },
+  "tweetsCountsRecent": {
+    "fields": [
+      {
+        "name": "query",
+        "type": "string",
+        "required": true
+      }
+    ]
+  }
+}

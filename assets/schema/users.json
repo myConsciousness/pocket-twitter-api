@@ -1,0 +1,21 @@
+{
+  "usersMe": {
+    "fields": [
+      {
+        "name": "expansions",
+        "type": "list",
+        "required": false
+      },
+      {
+        "name": "tweet.fields",
+        "type": "list",
+        "required": false
+      },
+      {
+        "name": "user.fields",
+        "type": "list",
+        "required": false
+      }
+    ]
+  }
+}

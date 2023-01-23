@@ -10,10 +10,12 @@ class PlaygroundScaffold extends StatelessWidget {
   /// Returns the new instance of [PlaygroundScaffold].
   const PlaygroundScaffold({
     super.key,
+    this.drawer,
     this.floatingActionButton,
     required this.body,
   });
 
+  final Widget? drawer;
   final Widget? floatingActionButton;
   final Widget body;
 
@@ -29,6 +31,7 @@ class PlaygroundScaffold extends StatelessWidget {
           ),
         ),
       ),
+      drawer: drawer != null ? Drawer(child: drawer) : null,
       floatingActionButton: floatingActionButton,
       body: Padding(
         padding: const EdgeInsets.all(20),

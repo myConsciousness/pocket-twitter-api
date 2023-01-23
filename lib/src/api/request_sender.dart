@@ -28,9 +28,15 @@ class RequestSender {
 
     switch (_endpoint) {
       case Endpoint.tweetsSearchRecent:
-        return twitter.tweets.searchRecent(
+        return await twitter.tweets.searchRecent(
           query: _parameters['query'] ?? '',
         );
+      case Endpoint.tweetsCountsRecent:
+        return await twitter.tweets.countRecent(
+          query: _parameters['query'] ?? '',
+        );
+      case Endpoint.usersMe:
+        return await twitter.users.lookupMe();
     }
   }
 }
