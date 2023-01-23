@@ -4,16 +4,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter_api_playground/src/core/font.dart';
 
-final counterProvider = StateNotifierProvider<Counter, int>((ref) {
-  return Counter();
-});
-
-class Counter extends StateNotifier<int> {
-  Counter() : super(0);
-
-  void increment() => state++;
-}
+import 'src/view/home_page.dart';
 
 void main() {
   runApp(
@@ -21,33 +14,12 @@ void main() {
       child: MaterialApp(
         title: 'Twitter API Playground',
         theme: ThemeData(
+          fontFamily: Font.firaCode.fontFamily,
           useMaterial3: true,
         ),
-        home: const TwitterApiPlayground(),
+        debugShowCheckedModeBanner: false,
+        home: TwitterApiPlayground(),
       ),
     ),
   );
-}
-
-class TwitterApiPlayground extends ConsumerWidget {
-  const TwitterApiPlayground({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(counterProvider);
-
-    return Scaffold(
-      body: Column(
-        children: [
-          Text('$count'),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(counterProvider.notifier).increment();
-            },
-            child: const Text('Push'),
-          )
-        ],
-      ),
-    );
-  }
 }

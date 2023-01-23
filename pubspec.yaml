@@ -39,6 +39,8 @@ dependencies:
   twitter_api_v2: ^4.8.1
   twitter_oauth2_pkce: ^1.0.1
   flutter_riverpod: ^2.1.3
+  shared_preferences: ^2.0.17
+  flutter_animated_dialog: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +64,14 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  fonts:
+    - family: FiraCode
+      fonts:
+        - asset: assets/fonts/fira-code/FiraCode-Retina.ttf
+    - family: Pico
+      fonts:
+        - asset: assets/fonts/pico/PICOBLA.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
