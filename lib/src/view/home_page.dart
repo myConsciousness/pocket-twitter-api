@@ -99,13 +99,13 @@ class TwitterApiPlayground extends ConsumerWidget {
                       return const CircularProgressIndicator();
                     }
 
-                    final Map<String, dynamic> schema =
-                        jsonDecode(snapshot.data);
-                    final endpoint = ref.watch(_endpointProvider);
+                    final Map<String, dynamic> schema = jsonDecode(
+                      snapshot.data,
+                    );
 
                     return Column(
                       children: _buildInputFields(
-                        schema[endpoint.name],
+                        schema[ref.watch(_endpointProvider).name],
                       ),
                     );
                   },
