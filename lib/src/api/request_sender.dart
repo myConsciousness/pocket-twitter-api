@@ -17,12 +17,14 @@ class RequestSender {
 
   final Map<String, String> _parameters;
 
-  Future<TwitterResponse> execute() async {
+  Future<TwitterResponse> execute({
+    required Function(RetryEvent event)? onRetry,
+  }) async {
     final twitter = TwitterApi(
       bearerToken: '',
       retryConfig: RetryConfig(
         maxAttempts: 5,
-        onExecute: print,
+        onExecute: onRetry,
       ),
     );
 

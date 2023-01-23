@@ -56,7 +56,9 @@ class TwitterApiPlayground extends ConsumerWidget {
             ref.watch(_endpointProvider),
             _controllers.map((key, value) => MapEntry(key, value.text)),
           )
-              .execute()
+              .execute(onRetry: (error) {
+                // TODO: Do something on retry.
+              })
               .then(
                 (response) => Navigator.push(
                   context,
@@ -84,26 +86,31 @@ class TwitterApiPlayground extends ConsumerWidget {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: FutureBuilder(
-              future: rootBundle.loadString(
-                'assets/schema/${ref.watch(_serviceProvider).name}.json',
-              ),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
-
-                final Map<String, dynamic> schema = jsonDecode(snapshot.data);
-                final endpoint = ref.watch(_endpointProvider);
-
-                return Column(
-                  children: _buildInputFields(
-                    schema[endpoint.name],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: FutureBuilder(
+                  future: rootBundle.loadString(
+                    'assets/schema/${ref.watch(_serviceProvider).name}.json',
                   ),
-                );
-              },
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    final Map<String, dynamic> schema =
+                        jsonDecode(snapshot.data);
+                    final endpoint = ref.watch(_endpointProvider);
+
+                    return Column(
+                      children: _buildInputFields(
+                        schema[endpoint.name],
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ],
