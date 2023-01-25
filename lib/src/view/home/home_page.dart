@@ -12,9 +12,9 @@ import 'package:twitter_api_playground/src/api/request_sender.dart';
 import 'package:twitter_api_playground/src/api/service.dart';
 import 'package:twitter_api_playground/src/components/playground_scaffold.dart';
 import 'package:twitter_api_playground/src/components/playground_text_field.dart';
-import 'package:twitter_api_playground/src/view/response_page.dart';
+import 'package:twitter_api_playground/src/view/response/response_page.dart';
 
-import '../components/playground_dropdown_button.dart';
+import '../../components/playground_dropdown_button.dart';
 
 final _serviceProvider =
     StateNotifierProvider<_ServiceNotifier, Service>((ref) {

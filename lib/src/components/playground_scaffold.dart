@@ -3,24 +3,38 @@
 // modification, are permitted provided the conditions.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/font.dart';
 
-class PlaygroundScaffold extends StatelessWidget {
+final navigationCurrentIndexProvider =
+    StateNotifierProvider<_NavigationCurrentIndexNotifier, int>((ref) {
+  return _NavigationCurrentIndexNotifier();
+});
+
+class _NavigationCurrentIndexNotifier extends StateNotifier<int> {
+  _NavigationCurrentIndexNotifier() : super(0);
+
+  void update(final int index) => state = index;
+}
+
+class PlaygroundScaffold extends ConsumerWidget {
   /// Returns the new instance of [PlaygroundScaffold].
   const PlaygroundScaffold({
     super.key,
     this.drawer,
+    this.navigationBarItems,
     this.floatingActionButton,
     required this.body,
   });
 
   final Widget? drawer;
+  final List<BottomNavigationBarItem>? navigationBarItems;
   final Widget? floatingActionButton;
   final Widget body;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -37,6 +51,15 @@ class PlaygroundScaffold extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: body,
       ),
+      bottomNavigationBar: navigationBarItems != null
+          ? BottomNavigationBar(
+              items: navigationBarItems!,
+              currentIndex: ref.watch(navigationCurrentIndexProvider),
+              onTap: (int index) {
+                ref.read(navigationCurrentIndexProvider.notifier).update(index);
+              },
+            )
+          : null,
     );
   }
 }

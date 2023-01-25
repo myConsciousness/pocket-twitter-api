@@ -12,6 +12,9 @@ class RequestSender {
     this._parameters,
   );
 
+  /// The bearer token for Twitter API.
+  static const _bearerToken = String.fromEnvironment('PLAYGROUND_BEARER_TOKEN');
+
   /// The endpoint to communicate.
   final Endpoint _endpoint;
 
@@ -21,7 +24,7 @@ class RequestSender {
     required Function(RetryEvent event)? onRetry,
   }) async {
     final twitter = TwitterApi(
-      bearerToken: '',
+      bearerToken: _bearerToken,
       retryConfig: RetryConfig(
         maxAttempts: 5,
         onExecute: onRetry,
