@@ -75,6 +75,7 @@
     ]
   },
   "/v2/tweets/counts/recent": {
+    "expansion_type": "tweets",
     "fields": [
       {
         "name": "query",

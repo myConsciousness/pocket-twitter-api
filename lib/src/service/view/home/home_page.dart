@@ -20,9 +20,16 @@ import 'package:twitter_api_playground/src/service/model/schema.dart';
 import 'package:twitter_api_playground/src/service/model/schema_field.dart';
 import 'package:twitter_api_playground/src/service/view/response/response_page.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
+import 'package:twitter_oauth2_pkce/twitter_oauth2_pkce.dart' as oauth2;
 
 import '../../model/expansion_type.dart';
 import '../../model/schema_field_type.dart';
+
+const _clientId = String.fromEnvironment('PLAYGROUND_CLIENT_ID');
+const _clientSecret = String.fromEnvironment('PLAYGROUND_CLIENT_SECRET');
+const _oauthRedirectUri = String.fromEnvironment('PLAYGROUND_REDIRECT_URI');
+const _oauthRedirectUriScheme =
+    String.fromEnvironment('PLAYGROUND_REDIRECT_URI_SCHEME');
 
 final _serviceProvider =
     StateNotifierProvider<_ServiceNotifier, Service>((ref) {
@@ -60,24 +67,43 @@ class TwitterApiPlayground extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          RequestSender(
-            ref.watch(_endpointProvider),
-            _controllers.map((key, value) => MapEntry(key, value.text)),
-          )
-              .execute(onRetry: (error) {
-                // TODO: Do something on retry.
-              })
-              .then(
-                (response) => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResponsePage(
-                      response: response,
-                    ),
-                  ),
-                ),
+          assert(_clientId.isNotEmpty);
+          assert(_clientSecret.isNotEmpty);
+          assert(_oauthRedirectUri.isNotEmpty);
+          assert(_oauthRedirectUriScheme.isNotEmpty);
+
+          final oauthClient = oauth2.TwitterOAuth2Client(
+            clientId: _clientId,
+            clientSecret: _clientSecret,
+            redirectUri: _oauthRedirectUri,
+            customUriScheme: _oauthRedirectUriScheme,
+          );
+
+          oauthClient
+              .executeAuthCodeFlowWithPKCE(
+                scopes: oauth2.Scope.values,
               )
-              .catchError((error) {});
+              .then(
+                (response) => RequestSender(
+                  response.accessToken,
+                  ref.watch(_endpointProvider),
+                  _controllers.map((key, value) => MapEntry(key, value.text)),
+                )
+                    .execute(onRetry: (error) {
+                      // TODO: Do something on retry.
+                    })
+                    .then(
+                      (response) => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResponsePage(
+                            response: response,
+                          ),
+                        ),
+                      ),
+                    )
+                    .catchError((error) {}),
+              );
         },
         tooltip: 'Send Request',
         child: const Icon(Icons.send),

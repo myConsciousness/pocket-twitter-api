@@ -8,12 +8,12 @@ import 'package:twitter_api_v2/twitter_api_v2.dart';
 class RequestSender {
   /// Returns the new instance of [RequestSender].
   const RequestSender(
+    this._accessToken,
     this._endpoint,
     this._parameters,
   );
 
-  /// The bearer token for Twitter API.
-  static const _bearerToken = String.fromEnvironment('PLAYGROUND_BEARER_TOKEN');
+  final String _accessToken;
 
   /// The endpoint to communicate.
   final Endpoint _endpoint;
@@ -24,7 +24,7 @@ class RequestSender {
     required Function(RetryEvent event)? onRetry,
   }) async {
     final twitter = TwitterApi(
-      bearerToken: _bearerToken,
+      bearerToken: _accessToken,
       retryConfig: RetryConfig(
         maxAttempts: 5,
         onExecute: onRetry,
