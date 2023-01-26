@@ -3,7 +3,7 @@
 // modification, are permitted provided the conditions.
 
 import 'package:flutter/material.dart';
-import 'package:twitter_api_playground/src/api/endpoint.dart';
+import 'package:twitter_api_playground/src/service/api/endpoint.dart';
 
 class PlaygroundDropdownButton extends StatelessWidget {
   /// Returns the new instance of [PlaygroundDropdownButton].

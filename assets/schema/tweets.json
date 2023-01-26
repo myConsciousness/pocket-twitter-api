@@ -1,5 +1,6 @@
 {
-  "tweetsSearchRecent": {
+  "/v2/tweets/search/recent": {
+    "expansion_type": "tweets",
     "fields": [
       {
         "name": "query",
@@ -8,12 +9,72 @@
       },
       {
         "name": "max_results",
-        "type": "int",
+        "type": "integer",
+        "required": false
+      },
+      {
+        "name": "next_token",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "sort_order",
+        "type": "radio",
+        "required": false
+      },
+      {
+        "name": "start_time",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "end_time",
+        "type": "datetime",
+        "required": false
+      },
+      {
+        "name": "since_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "until_id",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "expansions",
+        "type": "picklist",
+        "required": false
+      },
+      {
+        "name": "tweet.fields",
+        "type": "picklist",
+        "required": false
+      },
+      {
+        "name": "user.fields",
+        "type": "picklist",
+        "required": false
+      },
+      {
+        "name": "place.fields",
+        "type": "picklist",
+        "required": false
+      },
+      {
+        "name": "poll.fields",
+        "type": "picklist",
+        "required": false
+      },
+      {
+        "name": "media.fields",
+        "type": "picklist",
         "required": false
       }
     ]
   },
-  "tweetsCountsRecent": {
+  "/v2/tweets/counts/recent": {
     "fields": [
       {
         "name": "query",

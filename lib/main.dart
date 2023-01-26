@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_api_playground/src/core/font.dart';
 
-import 'src/view/home/home_page.dart';
+import 'src/service/view/home/home_page.dart';
 
 void main() {
   runApp(

@@ -1,19 +1,20 @@
 {
-  "usersMe": {
+  "/v2/users/me": {
+    "expansion_type": "users",
     "fields": [
       {
         "name": "expansions",
-        "type": "list",
+        "type": "picklist",
         "required": false
       },
       {
         "name": "tweet.fields",
-        "type": "list",
+        "type": "picklist",
         "required": false
       },
       {
         "name": "user.fields",
-        "type": "list",
+        "type": "picklist",
         "required": false
       }
     ]

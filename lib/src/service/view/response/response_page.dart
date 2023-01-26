@@ -4,11 +4,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:twitter_api_playground/src/components/playground_scaffold.dart';
-import 'package:twitter_api_playground/src/view/response/body_tab.dart';
-import 'package:twitter_api_playground/src/view/response/headers_tab.dart';
-import 'package:twitter_api_playground/src/view/response/rate_limit_tab.dart';
-import 'package:twitter_api_playground/src/view/response/tab_type.dart';
+import 'package:twitter_api_playground/src/service/components/playground_scaffold.dart';
+import 'package:twitter_api_playground/src/service/view/response/body_tab.dart';
+import 'package:twitter_api_playground/src/service/view/response/headers_tab.dart';
+import 'package:twitter_api_playground/src/service/view/response/rate_limit_tab.dart';
+import 'package:twitter_api_playground/src/service/view/response/tab_type.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 
 class ResponsePage extends ConsumerWidget {

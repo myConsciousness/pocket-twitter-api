@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/font.dart';
+import '../../core/font.dart';
 
 final navigationCurrentIndexProvider =
     StateNotifierProvider<_NavigationCurrentIndexNotifier, int>((ref) {

@@ -7,14 +7,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:twitter_api_playground/src/api/endpoint.dart';
-import 'package:twitter_api_playground/src/api/request_sender.dart';
-import 'package:twitter_api_playground/src/api/service.dart';
-import 'package:twitter_api_playground/src/components/playground_scaffold.dart';
-import 'package:twitter_api_playground/src/components/playground_text_field.dart';
-import 'package:twitter_api_playground/src/view/response/response_page.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:twitter_api_playground/src/service/api/endpoint.dart';
+import 'package:twitter_api_playground/src/service/api/request_sender.dart';
+import 'package:twitter_api_playground/src/service/api/service.dart';
+import 'package:twitter_api_playground/src/service/components/playground_datetime_picker.dart';
+import 'package:twitter_api_playground/src/service/components/playground_dropdown_button.dart';
+import 'package:twitter_api_playground/src/service/components/playground_picklist.dart';
+import 'package:twitter_api_playground/src/service/components/playground_scaffold.dart';
+import 'package:twitter_api_playground/src/service/components/playground_text_field.dart';
+import 'package:twitter_api_playground/src/service/model/schema.dart';
+import 'package:twitter_api_playground/src/service/model/schema_field.dart';
+import 'package:twitter_api_playground/src/service/view/response/response_page.dart';
+import 'package:twitter_api_v2/twitter_api_v2.dart';
 
-import '../../components/playground_dropdown_button.dart';
+import '../../model/expansion_type.dart';
+import '../../model/schema_field_type.dart';
 
 final _serviceProvider =
     StateNotifierProvider<_ServiceNotifier, Service>((ref) {
@@ -99,13 +107,16 @@ class TwitterApiPlayground extends ConsumerWidget {
                       return const CircularProgressIndicator();
                     }
 
-                    final Map<String, dynamic> schema = jsonDecode(
+                    final Map<String, dynamic> schemata = jsonDecode(
                       snapshot.data,
                     );
 
                     return Column(
                       children: _buildInputFields(
-                        schema[ref.watch(_endpointProvider).name],
+                        context,
+                        Schema.fromJson(
+                          schemata[ref.watch(_endpointProvider).unencodedUrl],
+                        ),
                       ),
                     );
                   },
@@ -118,25 +129,56 @@ class TwitterApiPlayground extends ConsumerWidget {
     );
   }
 
-  List<Widget> _buildInputFields(final Map<String, dynamic> schema) {
+  List<Widget> _buildInputFields(
+    final BuildContext context,
+    final Schema schema,
+  ) {
     //! Remove all controllers before rebuild.
     _controllers.removeWhere((key, value) => true);
 
     final inputFields = <Widget>[];
 
-    for (final field in schema['fields']) {
-      final fieldName = field['name'];
+    for (final field in schema.fields) {
+      final fieldName = field.name;
       final controller = TextEditingController();
 
       assert(!_controllers.containsKey(fieldName));
       _controllers[fieldName] = controller;
 
-      inputFields.add(
-        PlaygroundTextField(
-          controller: controller,
-          labelText: fieldName,
-        ),
-      );
+      switch (field.type) {
+        case SchemaFieldType.string:
+        case SchemaFieldType.integer:
+          inputFields.add(
+            PlaygroundTextField(
+              controller: controller,
+              labelText: fieldName,
+            ),
+          );
+
+          break;
+        case SchemaFieldType.radio:
+          break;
+        case SchemaFieldType.picklist:
+          inputFields.add(
+            PlaygroundPicklist(
+              title: field.name,
+              controller: controller,
+              labelText: fieldName,
+              items: _getPicklistItems(schema.expansionType, field),
+            ),
+          );
+
+          break;
+        case SchemaFieldType.datetime:
+          inputFields.add(
+            PlaygroundDatetimePicker(
+              controller: controller,
+              labelText: fieldName,
+            ),
+          );
+
+          break;
+      }
     }
 
     return inputFields;
@@ -201,4 +243,52 @@ class TwitterApiPlayground extends ConsumerWidget {
 
     return menuItems;
   }
+
+  List<MultiSelectItem> _getPicklistItems(
+    final ExpansionType expansionType,
+    final SchemaField field,
+  ) {
+    switch (field.name) {
+      case 'expansions':
+        switch (expansionType) {
+          case ExpansionType.tweets:
+            return _buildMultiSelectItems(
+              TweetExpansion.values.map((e) => e.value).toList(),
+            );
+          case ExpansionType.users:
+            return _buildMultiSelectItems(
+              UserExpansion.values.map((e) => e.value).toList(),
+            );
+        }
+      case 'tweet.fields':
+        return _buildMultiSelectItems(
+          TweetField.values.map((e) => e.value).toList(),
+        );
+      case 'user.fields':
+        return _buildMultiSelectItems(
+          UserField.values.map((e) => e.value).toList(),
+        );
+      case 'place.fields':
+        return _buildMultiSelectItems(
+          PlaceField.values.map((e) => e.value).toList(),
+        );
+      case 'poll.fields':
+        return _buildMultiSelectItems(
+          PollField.values.map((e) => e.value).toList(),
+        );
+      case 'media.fields':
+        return _buildMultiSelectItems(
+          MediaField.values.map((e) => e.value).toList(),
+        );
+      case 'sort_order':
+        return _buildMultiSelectItems(
+          SortOrder.values.map((e) => e.value).toList(),
+        );
+    }
+
+    throw UnsupportedError('Unsupported field name [${field.name}].');
+  }
+
+  List<MultiSelectItem> _buildMultiSelectItems(final List<String> values) =>
+      values.map((value) => MultiSelectItem(value, value)).toList();
 }
