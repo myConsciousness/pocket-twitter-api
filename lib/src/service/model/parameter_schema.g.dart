@@ -2,20 +2,20 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-part of 'schema_field.dart';
+part of 'parameter_schema.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SchemaField _$$_SchemaFieldFromJson(Map json) => $checkedCreate(
-      r'_$_SchemaField',
+_$_ParameterSchema _$$_ParameterSchemaFromJson(Map json) => $checkedCreate(
+      r'_$_ParameterSchema',
       json,
       ($checkedConvert) {
-        final val = _$_SchemaField(
+        final val = _$_ParameterSchema(
           name: $checkedConvert('name', (v) => v as String),
           type: $checkedConvert(
-              'type', (v) => $enumDecode(_$SchemaFieldTypeEnumMap, v)),
+              'type', (v) => $enumDecode(_$ParameterSchemaTypeEnumMap, v)),
           isRequired: $checkedConvert('required', (v) => v as bool),
         );
         return val;
@@ -23,17 +23,17 @@ _$_SchemaField _$$_SchemaFieldFromJson(Map json) => $checkedCreate(
       fieldKeyMap: const {'isRequired': 'required'},
     );
 
-Map<String, dynamic> _$$_SchemaFieldToJson(_$_SchemaField instance) =>
+Map<String, dynamic> _$$_ParameterSchemaToJson(_$_ParameterSchema instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'type': _$SchemaFieldTypeEnumMap[instance.type]!,
+      'type': _$ParameterSchemaTypeEnumMap[instance.type]!,
       'required': instance.isRequired,
     };
 
-const _$SchemaFieldTypeEnumMap = {
-  SchemaFieldType.string: 'string',
-  SchemaFieldType.integer: 'integer',
-  SchemaFieldType.radio: 'radio',
-  SchemaFieldType.picklist: 'picklist',
-  SchemaFieldType.datetime: 'datetime',
+const _$ParameterSchemaTypeEnumMap = {
+  ParameterSchemaType.string: 'string',
+  ParameterSchemaType.integer: 'integer',
+  ParameterSchemaType.radio: 'radio',
+  ParameterSchemaType.picklist: 'picklist',
+  ParameterSchemaType.datetime: 'datetime',
 };

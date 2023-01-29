@@ -1,4 +1,4 @@
-enum SchemaFieldType {
+enum ParameterSchemaType {
   string,
   integer,
   radio,

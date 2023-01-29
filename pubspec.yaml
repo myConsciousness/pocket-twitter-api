@@ -81,8 +81,7 @@ flutter:
         - asset: assets/fonts/pico/PICOBLA.ttf
 
   assets:
-    - assets/schema/tweets.json
-    - assets/schema/users.json
+    - assets/schema/schema.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:
