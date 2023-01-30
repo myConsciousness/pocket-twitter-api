@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // 🌎 Project imports:
 import '../../core/api/endpoint.dart';
 import '../../core/api/service.dart';
+import '../../core/api/token/refresh_token.dart';
 
 class PlaygroundEndpointMenu extends ConsumerWidget {
   /// Returns the new instance of [PlaygroundEndpointMenu].
@@ -19,14 +20,12 @@ class PlaygroundEndpointMenu extends ConsumerWidget {
     Key? key,
     required this.labelText,
     required this.value,
-    required this.onChanged,
   })  : _controller = TextEditingController(
             text: '${value.httpMethod.value} ${value.unencodedUrl}'),
         super(key: key);
 
   final String labelText;
   final Endpoint value;
-  final Function(Endpoint value) onChanged;
 
   final TextEditingController _controller;
 
@@ -63,7 +62,11 @@ class PlaygroundEndpointMenu extends ConsumerWidget {
                   for (final item in selectedList) {
                     if (item is SelectedListItem) {
                       _controller.text = item.value!;
-                      onChanged.call(Endpoint.resourceOf(item.value!));
+
+                      ref.read(refreshTokenStateProvider.notifier).clear();
+                      ref.read(endpointStateProvider.notifier).update(
+                            Endpoint.resourceOf(item.value!),
+                          );
                     }
                   }
                 },

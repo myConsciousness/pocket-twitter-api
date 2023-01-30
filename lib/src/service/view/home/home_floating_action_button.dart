@@ -42,7 +42,7 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
             _controllers.map(
               (key, value) => MapEntry(key, value.text),
             ),
-          ).execute(onRetry: (error) {
+          ).execute(onRetry: (event) {
             // TODO: Do something on retry.
           }).then(
             (response) async {

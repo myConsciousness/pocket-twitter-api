@@ -14,4 +14,5 @@ const enumSchema = <String, List<Serializable>>{
   'poll.fields': PollField.values,
   'media.fields': MediaField.values,
   'sort_order': SortOrder.values,
+  'granularity': TweetCountGranularity.values,
 };

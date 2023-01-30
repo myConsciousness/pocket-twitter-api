@@ -86,6 +86,36 @@
           "name": "query",
           "type": "string",
           "required": true
+        },
+        {
+          "name": "next_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "start_time",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "end_time",
+          "type": "datetime",
+          "required": false
+        },
+        {
+          "name": "since_id",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "until_id",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "granularity",
+          "type": "radio",
+          "required": false
         }
       ]
     }
