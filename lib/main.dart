@@ -23,9 +23,10 @@ Future<void> main() async {
         theme: ThemeData(
           fontFamily: Font.firaCode.fontFamily,
           useMaterial3: true,
+          brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
-        home: TwitterApiPlayground(schema: await loadSchema),
+        home: PlaygroundHomePage(schema: await loadSchema),
       ),
     ),
   );

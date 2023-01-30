@@ -3,6 +3,7 @@
 // modification, are permitted provided the conditions.
 
 // 🐦 Flutter imports:
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -14,8 +15,8 @@ import 'package:twitter_oauth2_pkce/twitter_oauth2_pkce.dart' as oauth2;
 // 🌎 Project imports:
 import '../../../core/api/endpoint.dart';
 import '../../../core/api/service.dart';
-import '../../../core/api/token/refresh_token_provider.dart';
-import '../../../core/api/token/secret_provider.dart';
+import '../../../core/api/token/refresh_token.dart';
+import '../../../core/api/token/secret.dart';
 import '../../../core/schema/model/expansion_type.dart';
 import '../../../core/schema/model/parameter_schema.dart';
 import '../../../core/schema/model/parameter_schema_type.dart';
@@ -24,12 +25,14 @@ import '../../api/request_sender.dart';
 import '../../components/playground_datetime_picker.dart';
 import '../../components/playground_dropdown_button.dart';
 import '../../components/playground_picklist.dart';
+import '../../components/playground_radio_list.dart';
 import '../../components/playground_scaffold.dart';
 import '../../components/playground_text_field.dart';
-import '../response/response_page.dart';
+import '../result/result_navigation_type.dart';
+import '../result/result_page.dart';
 
-class TwitterApiPlayground extends ConsumerWidget {
-  TwitterApiPlayground({
+class PlaygroundHomePage extends ConsumerWidget {
+  PlaygroundHomePage({
     super.key,
     required ServiceSchema schema,
   }) : _schema = schema;
@@ -54,16 +57,22 @@ class TwitterApiPlayground extends ConsumerWidget {
             _controllers.map((key, value) => MapEntry(key, value.text)),
           ).execute(onRetry: (error) {
             // TODO: Do something on retry.
-          }).then((response) async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ResponsePage(
-                  response: response,
+          }).then(
+            (response) async {
+              ref.read(navigationCurrentIndexProvider.notifier).update(
+                    ResultNavigationType.body.value,
+                  );
+
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultPage(
+                    response: response,
+                  ),
                 ),
-              ),
-            );
-          }).catchError((error) {});
+              );
+            },
+          ).catchError((error) {});
         },
         tooltip: 'Send Request',
         child: const Icon(Icons.send),
@@ -73,23 +82,22 @@ class TwitterApiPlayground extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(top: 30, bottom: 30),
             child: PlaygroundDropdownButton(
-              endpoint: ref.watch(endpointStateProvider),
-              items: _buildDropdownMenuItems(ref),
+              labelText: 'Endpoint',
+              value: ref.watch(endpointStateProvider),
+              items: _buildDropdownMenuItems(ref.watch(serviceStateProvider)),
               onChanged: (endpoint) {
                 ref.read(refreshTokenStateProvider.notifier).clear();
-                ref.read(endpointStateProvider.notifier).update(endpoint!);
+                ref.read(endpointStateProvider.notifier).update(endpoint);
               },
             ),
           ),
+          const Divider(),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  children: _buildInputFields(
-                    context,
-                    ref,
-                  ),
+                  children: _buildInputFields(context, ref),
                 ),
               ),
             ),
@@ -122,12 +130,23 @@ class TwitterApiPlayground extends ConsumerWidget {
           inputFields.add(
             PlaygroundTextField(
               controller: controller,
-              labelText: fieldName,
+              labelText:
+                  parameter.isRequired ? '$fieldName (required)' : fieldName,
             ),
           );
 
           break;
         case ParameterSchemaType.radio:
+          final items = _getDropdownItems(fieldName);
+
+          inputFields.add(
+            PlaygroundRadioList(
+              controller: controller,
+              labelText: fieldName,
+              items: items,
+            ),
+          );
+
           break;
         case ParameterSchemaType.picklist:
           inputFields.add(
@@ -156,6 +175,15 @@ class TwitterApiPlayground extends ConsumerWidget {
     }
 
     return inputFields;
+  }
+
+  List<String> _getDropdownItems(final String fieldName) {
+    switch (fieldName) {
+      case 'sort_order':
+        return SortOrder.values.map((e) => e.value).toList();
+    }
+
+    throw UnsupportedError('Unsupported field name [$fieldName].');
   }
 
   List<Widget> _buildDrawerItems(
@@ -201,17 +229,18 @@ class TwitterApiPlayground extends ConsumerWidget {
     return menuItems;
   }
 
-  List<DropdownMenuItem<Endpoint>> _buildDropdownMenuItems(
-    final WidgetRef ref,
+  List<SelectedListItem> _buildDropdownMenuItems(
+    final Service service,
   ) {
-    final menuItems = <DropdownMenuItem<Endpoint>>[];
-    final service = ref.watch(serviceStateProvider);
+    final menuItems = <SelectedListItem>[];
 
     for (final endpoint in Endpoint.of(service)) {
+      final resource = '${endpoint.httpMethod.value} ${endpoint.unencodedUrl}';
+
       menuItems.add(
-        DropdownMenuItem(
-          value: endpoint,
-          child: Text(endpoint.unencodedUrl),
+        SelectedListItem(
+          name: resource,
+          value: resource,
         ),
       );
     }
@@ -227,45 +256,27 @@ class TwitterApiPlayground extends ConsumerWidget {
       case 'expansions':
         switch (expansionType) {
           case ExpansionType.tweets:
-            return _buildMultiSelectItems(
-              TweetExpansion.values.map((e) => e.value).toList(),
-            );
+            return _buildMultiSelectItems(TweetExpansion.values);
           case ExpansionType.users:
-            return _buildMultiSelectItems(
-              UserExpansion.values.map((e) => e.value).toList(),
-            );
+            return _buildMultiSelectItems(UserExpansion.values);
         }
       case 'tweet.fields':
-        return _buildMultiSelectItems(
-          TweetField.values.map((e) => e.value).toList(),
-        );
+        return _buildMultiSelectItems(TweetField.values);
       case 'user.fields':
-        return _buildMultiSelectItems(
-          UserField.values.map((e) => e.value).toList(),
-        );
+        return _buildMultiSelectItems(UserField.values);
       case 'place.fields':
-        return _buildMultiSelectItems(
-          PlaceField.values.map((e) => e.value).toList(),
-        );
+        return _buildMultiSelectItems(PlaceField.values);
       case 'poll.fields':
-        return _buildMultiSelectItems(
-          PollField.values.map((e) => e.value).toList(),
-        );
+        return _buildMultiSelectItems(PollField.values);
       case 'media.fields':
-        return _buildMultiSelectItems(
-          MediaField.values.map((e) => e.value).toList(),
-        );
-      case 'sort_order':
-        return _buildMultiSelectItems(
-          SortOrder.values.map((e) => e.value).toList(),
-        );
+        return _buildMultiSelectItems(MediaField.values);
     }
 
     throw UnsupportedError('Unsupported field name [${parameter.name}].');
   }
 
-  List<MultiSelectItem> _buildMultiSelectItems(final List<String> values) =>
-      values.map((value) => MultiSelectItem(value, value)).toList();
+  List<MultiSelectItem> _buildMultiSelectItems(final List<dynamic> values) =>
+      values.map((value) => MultiSelectItem(value.value, value.value)).toList();
 
   Future<String> _fetchAccessToken(final WidgetRef ref) async {
     final tokens = ref.watch(secretStateProvider);

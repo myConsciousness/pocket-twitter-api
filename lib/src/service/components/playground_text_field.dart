@@ -31,7 +31,6 @@ class PlaygroundTextField extends ConsumerWidget {
           border: const OutlineInputBorder(),
           labelText: labelText,
           filled: true,
-          fillColor: Colors.white,
         ),
       ),
     );
