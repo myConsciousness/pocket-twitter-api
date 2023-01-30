@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 enum ResultNavigationType {
   body(0, 'Body', Icon(Icons.data_object)),
   headers(1, 'Headers', Icon(Icons.security)),
-  rateLimit(2, 'Request', Icon(Icons.request_page));
+  info(2, 'Info', Icon(Icons.info));
 
   /// The value of this tab.
   final int value;

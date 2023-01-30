@@ -32,6 +32,12 @@ class PlaygroundDatetimePicker extends ConsumerWidget {
           border: const OutlineInputBorder(),
           labelText: labelText,
           filled: true,
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.clear),
+            onPressed: () {
+              controller.clear();
+            },
+          ),
         ),
         readOnly: true,
         onTap: () async {

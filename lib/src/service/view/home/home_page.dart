@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 import 'package:twitter_oauth2_pkce/twitter_oauth2_pkce.dart' as oauth2;
@@ -21,6 +22,7 @@ import '../../../core/schema/model/expansion_type.dart';
 import '../../../core/schema/model/parameter_schema.dart';
 import '../../../core/schema/model/parameter_schema_type.dart';
 import '../../../core/schema/model/service_schema.dart';
+import '../../../core/theme/brightness.dart';
 import '../../api/request_sender.dart';
 import '../../components/playground_datetime_picker.dart';
 import '../../components/playground_dropdown_button.dart';
@@ -43,10 +45,7 @@ class PlaygroundHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PlaygroundScaffold(
-      drawer: ListView(
-        padding: EdgeInsets.zero,
-        children: _buildDrawerItems(context, ref),
-      ),
+      drawer: _buildDrawerItems(context, ref),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final accessToken = await _fetchAccessToken(ref);
@@ -186,47 +185,96 @@ class PlaygroundHomePage extends ConsumerWidget {
     throw UnsupportedError('Unsupported field name [$fieldName].');
   }
 
-  List<Widget> _buildDrawerItems(
+  Widget _buildDrawerItems(
     final BuildContext context,
     final WidgetRef ref,
   ) {
-    final menuItems = <Widget>[
-      const DrawerHeader(
-        decoration: BoxDecoration(
-          color: Colors.blue,
-        ),
-        child: Text('Drawer Header'),
-      ),
-    ];
+    final menuItems = <Widget>[];
 
     for (final service in Service.values) {
       menuItems.add(
-        ListTile(
-          title: Text(
-            service.itemName,
-            style: const TextStyle(fontSize: 20),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: ListTile(
+            title: Text(
+              service.itemName,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              ref.read(refreshTokenStateProvider.notifier).clear();
+              ref.read(serviceStateProvider.notifier).update(service);
+              ref
+                  .read(endpointStateProvider.notifier)
+                  .update(Endpoint.of(service).first);
+
+              final snackBar = SnackBar(
+                content: Text(
+                  'Changed to ${service.itemName}.',
+                  style: const TextStyle(fontSize: 17),
+                ),
+                showCloseIcon: true,
+              );
+
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+              //! Close drawer.
+              Navigator.pop(context);
+            },
           ),
-          onTap: () {
-            ref.read(refreshTokenStateProvider.notifier).clear();
-            ref.read(serviceStateProvider.notifier).update(service);
-            ref
-                .read(endpointStateProvider.notifier)
-                .update(Endpoint.of(service).first);
-
-            final snackBar = SnackBar(
-              content: Text('Changed to ${service.itemName}.'),
-            );
-
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-            //! Close drawer.
-            Navigator.pop(context);
-          },
         ),
       );
     }
 
-    return menuItems;
+    return Column(
+      children: [
+        const SizedBox(height: 50),
+        Expanded(
+          child: ListView(
+            children: menuItems,
+          ),
+        ),
+        const Divider(),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              IconButton(
+                icon: ref.watch(brightnessStateProvider) == Brightness.dark
+                    ? const Icon(Icons.light_mode)
+                    : const Icon(Icons.dark_mode),
+                onPressed: () {
+                  final brightness = ref.watch(brightnessStateProvider);
+                  final brightnessNotifier =
+                      ref.read(brightnessStateProvider.notifier);
+
+                  brightness == Brightness.dark
+                      ? brightnessNotifier.toLightMode()
+                      : brightnessNotifier.toDarkMode();
+                },
+              ),
+              IconButton(
+                onPressed: () async {
+                  await LaunchReview.launch(
+                    androidAppId: '',
+                    iOSAppId: '',
+                  );
+                },
+                icon: const Icon(Icons.reviews),
+              ),
+              IconButton(
+                icon: const Icon(Icons.info),
+                onPressed: () {
+                  showLicensePage(context: context);
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   List<SelectedListItem> _buildDropdownMenuItems(

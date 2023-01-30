@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 // 📦 Package imports:
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 
-class RequestTab extends StatelessWidget {
-  /// Returns the new instance of [RequestTab].
-  const RequestTab({
+class InfoTab extends StatelessWidget {
+  /// Returns the new instance of [InfoTab].
+  const InfoTab({
     super.key,
     required this.response,
   });

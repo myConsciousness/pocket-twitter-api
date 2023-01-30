@@ -38,6 +38,12 @@ class PlaygroundDropdownButton extends StatelessWidget {
           border: const OutlineInputBorder(),
           labelText: labelText,
           filled: true,
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.clear),
+            onPressed: () {
+              _controller.clear();
+            },
+          ),
         ),
         readOnly: true,
         onTap: () async {

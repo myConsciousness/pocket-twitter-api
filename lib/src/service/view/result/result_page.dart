@@ -13,7 +13,7 @@ import 'package:twitter_api_v2/twitter_api_v2.dart';
 import '../../components/playground_scaffold.dart';
 import 'body_tab.dart';
 import 'headers_tab.dart';
-import 'request_tab.dart';
+import 'info_tab.dart';
 import 'result_navigation_type.dart';
 
 class ResultPage extends ConsumerWidget {
@@ -51,8 +51,8 @@ class ResultPage extends ConsumerWidget {
         return BodyTab(response: response);
       case ResultNavigationType.headers:
         return HeadersTab(response: response);
-      case ResultNavigationType.rateLimit:
-        return RequestTab(response: response);
+      case ResultNavigationType.info:
+        return InfoTab(response: response);
     }
   }
 }

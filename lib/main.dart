@@ -9,24 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 🌎 Project imports:
-import 'src/core/font/font.dart';
 import 'src/core/schema/schema_loader.dart';
-import 'src/service/view/home/home_page.dart';
+import 'src/playground_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     ProviderScope(
-      child: MaterialApp(
-        title: 'Twitter API Playground',
-        theme: ThemeData(
-          fontFamily: Font.firaCode.fontFamily,
-          useMaterial3: true,
-          brightness: Brightness.dark,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: PlaygroundHomePage(schema: await loadSchema),
+      child: PlaygroundApp(
+        schema: await loadSchema,
       ),
     ),
   );
