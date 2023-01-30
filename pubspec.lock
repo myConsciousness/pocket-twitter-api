@@ -761,10 +761,10 @@ packages:
     dependency: "direct main"
     description:
       name: twitter_api_v2
-      sha256: "9f4a1d6066417e7e95bb81b86f791f6ca1b39aa0283421da0c412c62b200a63f"
+      sha256: c1cfcf9d0df6d17b014a9f4b521bf0d9c19cd5e8872ebc3f7b604e31c5fc9ef4
       url: "https://pub.dev"
     source: hosted
-    version: "4.8.2"
+    version: "4.8.3"
   twitter_oauth2_pkce:
     dependency: "direct main"
     description:

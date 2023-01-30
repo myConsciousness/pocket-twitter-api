@@ -18,6 +18,7 @@ import '../../../core/api/endpoint.dart';
 import '../../../core/api/service.dart';
 import '../../../core/api/token/refresh_token.dart';
 import '../../../core/api/token/secret.dart';
+import '../../../core/schema/enum_schema.dart';
 import '../../../core/schema/model/expansion_type.dart';
 import '../../../core/schema/model/parameter_schema.dart';
 import '../../../core/schema/model/parameter_schema_type.dart';
@@ -176,15 +177,6 @@ class PlaygroundHomePage extends ConsumerWidget {
     return inputFields;
   }
 
-  List<String> _getDropdownItems(final String fieldName) {
-    switch (fieldName) {
-      case 'sort_order':
-        return SortOrder.values.map((e) => e.value).toList();
-    }
-
-    throw UnsupportedError('Unsupported field name [$fieldName].');
-  }
-
   Widget _buildDrawerItems(
     final BuildContext context,
     final WidgetRef ref,
@@ -296,34 +288,27 @@ class PlaygroundHomePage extends ConsumerWidget {
     return menuItems;
   }
 
+  List<String> _getDropdownItems(final String fieldName) =>
+      enumSchema[fieldName]!.map((e) => e.value).toList();
+
   List<MultiSelectItem> _getPicklistItems(
     final ExpansionType expansionType,
     final ParameterSchema parameter,
   ) {
-    switch (parameter.name) {
-      case 'expansions':
-        switch (expansionType) {
-          case ExpansionType.tweets:
-            return _buildMultiSelectItems(TweetExpansion.values);
-          case ExpansionType.users:
-            return _buildMultiSelectItems(UserExpansion.values);
-        }
-      case 'tweet.fields':
-        return _buildMultiSelectItems(TweetField.values);
-      case 'user.fields':
-        return _buildMultiSelectItems(UserField.values);
-      case 'place.fields':
-        return _buildMultiSelectItems(PlaceField.values);
-      case 'poll.fields':
-        return _buildMultiSelectItems(PollField.values);
-      case 'media.fields':
-        return _buildMultiSelectItems(MediaField.values);
+    if (parameter.name == 'expansions') {
+      return _buildMultiSelectItems(
+        enumSchema['${expansionType.name}.${parameter.name}']!,
+      );
     }
 
-    throw UnsupportedError('Unsupported field name [${parameter.name}].');
+    return _buildMultiSelectItems(
+      enumSchema[parameter.name]!,
+    );
   }
 
-  List<MultiSelectItem> _buildMultiSelectItems(final List<dynamic> values) =>
+  List<MultiSelectItem> _buildMultiSelectItems(
+    final List<Serializable> values,
+  ) =>
       values.map((value) => MultiSelectItem(value.value, value.value)).toList();
 
   Future<String> _fetchAccessToken(final WidgetRef ref) async {
