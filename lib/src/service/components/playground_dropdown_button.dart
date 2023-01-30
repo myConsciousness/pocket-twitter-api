@@ -2,8 +2,11 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:twitter_api_playground/src/service/api/endpoint.dart';
+
+// 🌎 Project imports:
+import '../../core/api/endpoint.dart';
 
 class PlaygroundDropdownButton extends StatelessWidget {
   /// Returns the new instance of [PlaygroundDropdownButton].

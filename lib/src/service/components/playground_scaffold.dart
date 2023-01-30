@@ -2,10 +2,14 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/font.dart';
+// 🌎 Project imports:
+import '../../core/font/font.dart';
 
 final navigationCurrentIndexProvider =
     StateNotifierProvider<_NavigationCurrentIndexNotifier, int>((ref) {

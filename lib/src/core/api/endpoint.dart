@@ -2,7 +2,22 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// 📦 Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// 🌎 Project imports:
 import 'service.dart';
+
+final endpointStateProvider =
+    StateNotifierProvider<_EndpointStateNotifier, Endpoint>((ref) {
+  return _EndpointStateNotifier();
+});
+
+class _EndpointStateNotifier extends StateNotifier<Endpoint> {
+  _EndpointStateNotifier() : super(Endpoint.tweetsSearchRecent);
+
+  void update(final Endpoint endpoint) => state = endpoint;
+}
 
 const _tweetsService = Service.tweets;
 const _usersService = Service.users;

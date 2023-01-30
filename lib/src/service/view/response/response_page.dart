@@ -2,14 +2,19 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:twitter_api_playground/src/service/components/playground_scaffold.dart';
-import 'package:twitter_api_playground/src/service/view/response/body_tab.dart';
-import 'package:twitter_api_playground/src/service/view/response/headers_tab.dart';
-import 'package:twitter_api_playground/src/service/view/response/rate_limit_tab.dart';
-import 'package:twitter_api_playground/src/service/view/response/tab_type.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
+
+// 🌎 Project imports:
+import '../../components/playground_scaffold.dart';
+import 'body_tab.dart';
+import 'headers_tab.dart';
+import 'rate_limit_tab.dart';
+import 'tab_type.dart';
 
 class ResponsePage extends ConsumerWidget {
   /// Returns the new instance of [ResponsePage].

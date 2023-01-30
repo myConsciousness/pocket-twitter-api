@@ -2,11 +2,13 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// 📦 Package imports:
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:twitter_api_playground/src/service/api/endpoint.dart';
-import 'package:twitter_api_playground/src/service/model/expansion_type.dart';
 import 'package:twitter_oauth2_pkce/twitter_oauth2_pkce.dart';
 
+// 🌎 Project imports:
+import '../../api/endpoint.dart';
+import 'expansion_type.dart';
 import 'parameter_schema.dart';
 
 part 'endpoint_schema.freezed.dart';

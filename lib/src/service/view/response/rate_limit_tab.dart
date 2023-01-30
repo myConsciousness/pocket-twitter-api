@@ -2,11 +2,14 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 
 class RateLimitTab extends StatelessWidget {
-  /// Returns the new instance of [HeadersTab].
+  /// Returns the new instance of [RateLimitTab].
   const RateLimitTab({
     super.key,
     required this.response,

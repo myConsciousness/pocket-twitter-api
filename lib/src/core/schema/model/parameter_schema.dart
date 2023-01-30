@@ -4,8 +4,11 @@
 
 // ignore_for_file: invalid_annotation_target
 
+// 📦 Package imports:
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:twitter_api_playground/src/service/model/parameter_schema_type.dart';
+
+// 🌎 Project imports:
+import 'parameter_schema_type.dart';
 
 part 'parameter_schema.freezed.dart';
 part 'parameter_schema.g.dart';

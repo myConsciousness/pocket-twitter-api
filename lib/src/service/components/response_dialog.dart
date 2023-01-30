@@ -1,4 +1,7 @@
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 
 Future<void> showResponseDialog(

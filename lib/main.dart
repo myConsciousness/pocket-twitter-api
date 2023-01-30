@@ -2,14 +2,15 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
-import 'dart:convert';
-
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:twitter_api_playground/src/core/font.dart';
-import 'package:twitter_api_playground/src/service/model/service_schema.dart';
 
+// 📦 Package imports:
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// 🌎 Project imports:
+import 'src/core/font/font.dart';
+import 'src/core/schema/schema_loader.dart';
 import 'src/service/view/home/home_page.dart';
 
 Future<void> main() async {
@@ -24,13 +25,7 @@ Future<void> main() async {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: TwitterApiPlayground(
-          schema: ServiceSchema.fromJson(
-            jsonDecode(
-              await rootBundle.loadString('assets/schema/schema.json'),
-            ),
-          ),
-        ),
+        home: TwitterApiPlayground(schema: await loadSchema),
       ),
     ),
   );

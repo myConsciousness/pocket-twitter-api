@@ -2,8 +2,11 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
-import 'package:twitter_api_playground/src/service/api/endpoint.dart';
+// 📦 Package imports:
 import 'package:twitter_api_v2/twitter_api_v2.dart';
+
+// 🌎 Project imports:
+import '../../core/api/endpoint.dart';
 
 class RequestSender {
   /// Returns the new instance of [RequestSender].

@@ -2,83 +2,31 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
-import 'dart:convert';
-
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+// 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:twitter_api_playground/src/service/api/endpoint.dart';
-import 'package:twitter_api_playground/src/service/api/request_sender.dart';
-import 'package:twitter_api_playground/src/service/api/service.dart';
-import 'package:twitter_api_playground/src/service/components/playground_datetime_picker.dart';
-import 'package:twitter_api_playground/src/service/components/playground_dropdown_button.dart';
-import 'package:twitter_api_playground/src/service/components/playground_picklist.dart';
-import 'package:twitter_api_playground/src/service/components/playground_scaffold.dart';
-import 'package:twitter_api_playground/src/service/components/playground_text_field.dart';
-import 'package:twitter_api_playground/src/service/model/parameter_schema.dart';
-import 'package:twitter_api_playground/src/service/model/parameter_schema_type.dart';
-import 'package:twitter_api_playground/src/service/model/service_schema.dart';
-import 'package:twitter_api_playground/src/service/view/response/response_page.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 import 'package:twitter_oauth2_pkce/twitter_oauth2_pkce.dart' as oauth2;
 
-import '../../model/expansion_type.dart';
-
-const _clientId = String.fromEnvironment('PLAYGROUND_CLIENT_ID');
-const _clientSecret = String.fromEnvironment('PLAYGROUND_CLIENT_SECRET');
-const _oauthRedirectUri = String.fromEnvironment('PLAYGROUND_REDIRECT_URI');
-const _oauthRedirectUriScheme =
-    String.fromEnvironment('PLAYGROUND_REDIRECT_URI_SCHEME');
-
-final _serviceProvider =
-    StateNotifierProvider<_ServiceNotifier, Service>((ref) {
-  return _ServiceNotifier();
-});
-
-class _ServiceNotifier extends StateNotifier<Service> {
-  _ServiceNotifier() : super(Service.tweets);
-
-  void update(final Service service) => state = service;
-}
-
-final _endpointProvider =
-    StateNotifierProvider<_EndpointNotifier, Endpoint>((ref) {
-  return _EndpointNotifier();
-});
-
-class _EndpointNotifier extends StateNotifier<Endpoint> {
-  _EndpointNotifier() : super(Endpoint.tweetsSearchRecent);
-
-  void update(final Endpoint endpoint) => state = endpoint;
-}
-
-final _refreshTokenProvider =
-    StateNotifierProvider<_RefreshTokenNotifier, String>((ref) {
-  return _RefreshTokenNotifier();
-});
-
-class _RefreshTokenNotifier extends StateNotifier<String> {
-  _RefreshTokenNotifier() : super('');
-
-  void update(final String refreshToken) => state = refreshToken;
-  void clear() => state = '';
-}
-
-final _oAuth2ScopesProvider =
-    StateNotifierProvider<_OAuth2ScopesNotifier, List<oauth2.Scope>>((ref) {
-  return _OAuth2ScopesNotifier();
-});
-
-class _OAuth2ScopesNotifier extends StateNotifier<List<oauth2.Scope>> {
-  _OAuth2ScopesNotifier()
-      : super([
-          oauth2.Scope.tweetRead,
-          oauth2.Scope.usersRead,
-        ]);
-
-  void update(final List<oauth2.Scope> scopes) => state = scopes;
-}
+// 🌎 Project imports:
+import '../../../core/api/endpoint.dart';
+import '../../../core/api/service.dart';
+import '../../../core/api/token/refresh_token_provider.dart';
+import '../../../core/api/token/secret_provider.dart';
+import '../../../core/schema/model/expansion_type.dart';
+import '../../../core/schema/model/parameter_schema.dart';
+import '../../../core/schema/model/parameter_schema_type.dart';
+import '../../../core/schema/model/service_schema.dart';
+import '../../api/request_sender.dart';
+import '../../components/playground_datetime_picker.dart';
+import '../../components/playground_dropdown_button.dart';
+import '../../components/playground_picklist.dart';
+import '../../components/playground_scaffold.dart';
+import '../../components/playground_text_field.dart';
+import '../response/response_page.dart';
 
 class TwitterApiPlayground extends ConsumerWidget {
   TwitterApiPlayground({
@@ -102,23 +50,20 @@ class TwitterApiPlayground extends ConsumerWidget {
 
           RequestSender(
             accessToken,
-            ref.watch(_endpointProvider),
+            ref.watch(endpointStateProvider),
             _controllers.map((key, value) => MapEntry(key, value.text)),
-          )
-              .execute(onRetry: (error) {
-                // TODO: Do something on retry.
-              })
-              .then(
-                (response) => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResponsePage(
-                      response: response,
-                    ),
-                  ),
+          ).execute(onRetry: (error) {
+            // TODO: Do something on retry.
+          }).then((response) async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ResponsePage(
+                  response: response,
                 ),
-              )
-              .catchError((error) {});
+              ),
+            );
+          }).catchError((error) {});
         },
         tooltip: 'Send Request',
         child: const Icon(Icons.send),
@@ -128,11 +73,11 @@ class TwitterApiPlayground extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(top: 30, bottom: 30),
             child: PlaygroundDropdownButton(
-              endpoint: ref.watch(_endpointProvider),
+              endpoint: ref.watch(endpointStateProvider),
               items: _buildDropdownMenuItems(ref),
               onChanged: (endpoint) {
-                ref.read(_refreshTokenProvider.notifier).clear();
-                ref.read(_endpointProvider.notifier).update(endpoint!);
+                ref.read(refreshTokenStateProvider.notifier).clear();
+                ref.read(endpointStateProvider.notifier).update(endpoint!);
               },
             ),
           ),
@@ -159,10 +104,10 @@ class TwitterApiPlayground extends ConsumerWidget {
     final WidgetRef ref,
   ) {
     //! Remove all controllers before rebuild.
-    _controllers.removeWhere((key, value) => true);
+    _controllers.removeWhere((_, __) => true);
 
     final inputFields = <Widget>[];
-    final endpointSchema = _schema.endpointOf(ref.watch(_endpointProvider));
+    final endpointSchema = _schema.endpointOf(ref.watch(endpointStateProvider));
 
     for (final parameter in endpointSchema.parameters) {
       final fieldName = parameter.name;
@@ -190,7 +135,10 @@ class TwitterApiPlayground extends ConsumerWidget {
               title: fieldName,
               controller: controller,
               labelText: fieldName,
-              items: _getPicklistItems(endpointSchema.expansionType, parameter),
+              items: _getPicklistItems(
+                endpointSchema.expansionType,
+                parameter,
+              ),
             ),
           );
 
@@ -231,10 +179,10 @@ class TwitterApiPlayground extends ConsumerWidget {
             style: const TextStyle(fontSize: 20),
           ),
           onTap: () {
-            ref.read(_refreshTokenProvider.notifier).clear();
-            ref.read(_serviceProvider.notifier).update(service);
+            ref.read(refreshTokenStateProvider.notifier).clear();
+            ref.read(serviceStateProvider.notifier).update(service);
             ref
-                .read(_endpointProvider.notifier)
+                .read(endpointStateProvider.notifier)
                 .update(Endpoint.of(service).first);
 
             final snackBar = SnackBar(
@@ -257,7 +205,7 @@ class TwitterApiPlayground extends ConsumerWidget {
     final WidgetRef ref,
   ) {
     final menuItems = <DropdownMenuItem<Endpoint>>[];
-    final service = ref.watch(_serviceProvider);
+    final service = ref.watch(serviceStateProvider);
 
     for (final endpoint in Endpoint.of(service)) {
       menuItems.add(
@@ -320,36 +268,38 @@ class TwitterApiPlayground extends ConsumerWidget {
       values.map((value) => MultiSelectItem(value, value)).toList();
 
   Future<String> _fetchAccessToken(final WidgetRef ref) async {
-    assert(_clientId.isNotEmpty);
-    assert(_clientSecret.isNotEmpty);
-    assert(_oauthRedirectUri.isNotEmpty);
-    assert(_oauthRedirectUriScheme.isNotEmpty);
+    final tokens = ref.watch(secretStateProvider);
 
-    if (ref.watch(_refreshTokenProvider).isEmpty) {
+    if (ref.watch(refreshTokenStateProvider).isEmpty) {
       final oauthClient = oauth2.TwitterOAuth2Client(
-        clientId: _clientId,
-        clientSecret: _clientSecret,
-        redirectUri: _oauthRedirectUri,
-        customUriScheme: _oauthRedirectUriScheme,
+        clientId: tokens.clientId,
+        clientSecret: tokens.clientSecret,
+        redirectUri: tokens.redirectUri,
+        customUriScheme: tokens.customUriScheme,
       );
 
       final response = await oauthClient.executeAuthCodeFlowWithPKCE(
-        scopes: oauth2.Scope.values,
+        scopes: [
+          oauth2.Scope.offlineAccess,
+          ..._schema.endpointOf(ref.watch(endpointStateProvider)).scopes,
+        ],
       );
 
-      ref.read(_refreshTokenProvider.notifier).update(response.refreshToken!);
+      ref
+          .read(refreshTokenStateProvider.notifier)
+          .update(response.refreshToken!);
 
       return response.accessToken;
     }
 
     final refreshedResponse = await OAuthUtils.refreshAccessToken(
-      clientId: _clientId,
-      clientSecret: _clientSecret,
-      refreshToken: ref.watch(_refreshTokenProvider),
+      clientId: tokens.clientId,
+      clientSecret: tokens.clientSecret,
+      refreshToken: ref.watch(refreshTokenStateProvider),
     );
 
     ref
-        .read(_refreshTokenProvider.notifier)
+        .read(refreshTokenStateProvider.notifier)
         .update(refreshedResponse.refreshToken);
 
     return refreshedResponse.accessToken;
