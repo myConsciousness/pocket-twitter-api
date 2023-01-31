@@ -51,6 +51,7 @@ dependencies:
   launch_review: ^3.0.1
   font_awesome_flutter: ^10.3.0
   url_launcher: ^6.1.8
+  awesome_dialog: ^3.0.2
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@
 // modification, are permitted provided the conditions.
 
 // 🐦 Flutter imports:
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -17,6 +18,8 @@ import '../../../core/api/token/secret.dart';
 import '../../../core/schema/model/service_schema.dart';
 import '../../api/request_sender.dart';
 import '../../components/playground_scaffold.dart';
+import '../../validator/invalid_parameter_exception.dart';
+import '../../validator/schema_validator.dart';
 import '../result/result_navigation_type.dart';
 import '../result/result_page.dart';
 
@@ -34,14 +37,30 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => FloatingActionButton(
         onPressed: () async {
-          final accessToken = await _fetchAccessToken(ref);
+          final parameters = _parameters;
+
+          try {
+            SchemaValidator(
+              _schema.endpointOf(ref.watch(endpointStateProvider)).parameters,
+              parameters,
+            ).execute();
+          } on InvalidParameterException catch (e) {
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              title: e.title,
+              desc: e.message,
+              btnOkOnPress: () {},
+            ).show();
+
+            return;
+          }
 
           RequestSender(
-            accessToken,
+            await _fetchAccessToken(ref),
             ref.watch(endpointStateProvider),
-            _controllers.map(
-              (key, value) => MapEntry(key, value.text),
-            ),
+            parameters,
           ).execute(onRetry: (event) {
             // TODO: Do something on retry.
           }).then(
@@ -65,6 +84,10 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
         },
         tooltip: 'Send Request',
         child: const Icon(Icons.send),
+      );
+
+  Map<String, String> get _parameters => _controllers.map(
+        (key, value) => MapEntry(key, value.text),
       );
 
   Future<String> _fetchAccessToken(final WidgetRef ref) async {

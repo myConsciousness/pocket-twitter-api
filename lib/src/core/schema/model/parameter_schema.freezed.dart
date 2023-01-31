@@ -24,6 +24,7 @@ mixin _$ParameterSchema {
   ParameterSchemaType get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'required')
   bool get isRequired => throw _privateConstructorUsedError;
+  AllowedRange? get allowedRange => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,7 +41,10 @@ abstract class $ParameterSchemaCopyWith<$Res> {
   $Res call(
       {String name,
       ParameterSchemaType type,
-      @JsonKey(name: 'required') bool isRequired});
+      @JsonKey(name: 'required') bool isRequired,
+      AllowedRange? allowedRange});
+
+  $AllowedRangeCopyWith<$Res>? get allowedRange;
 }
 
 /// @nodoc
@@ -59,6 +63,7 @@ class _$ParameterSchemaCopyWithImpl<$Res, $Val extends ParameterSchema>
     Object? name = null,
     Object? type = null,
     Object? isRequired = null,
+    Object? allowedRange = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -73,7 +78,23 @@ class _$ParameterSchemaCopyWithImpl<$Res, $Val extends ParameterSchema>
           ? _value.isRequired
           : isRequired // ignore: cast_nullable_to_non_nullable
               as bool,
+      allowedRange: freezed == allowedRange
+          ? _value.allowedRange
+          : allowedRange // ignore: cast_nullable_to_non_nullable
+              as AllowedRange?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AllowedRangeCopyWith<$Res>? get allowedRange {
+    if (_value.allowedRange == null) {
+      return null;
+    }
+
+    return $AllowedRangeCopyWith<$Res>(_value.allowedRange!, (value) {
+      return _then(_value.copyWith(allowedRange: value) as $Val);
+    });
   }
 }
 
@@ -88,7 +109,11 @@ abstract class _$$_ParameterSchemaCopyWith<$Res>
   $Res call(
       {String name,
       ParameterSchemaType type,
-      @JsonKey(name: 'required') bool isRequired});
+      @JsonKey(name: 'required') bool isRequired,
+      AllowedRange? allowedRange});
+
+  @override
+  $AllowedRangeCopyWith<$Res>? get allowedRange;
 }
 
 /// @nodoc
@@ -105,6 +130,7 @@ class __$$_ParameterSchemaCopyWithImpl<$Res>
     Object? name = null,
     Object? type = null,
     Object? isRequired = null,
+    Object? allowedRange = freezed,
   }) {
     return _then(_$_ParameterSchema(
       name: null == name
@@ -119,6 +145,10 @@ class __$$_ParameterSchemaCopyWithImpl<$Res>
           ? _value.isRequired
           : isRequired // ignore: cast_nullable_to_non_nullable
               as bool,
+      allowedRange: freezed == allowedRange
+          ? _value.allowedRange
+          : allowedRange // ignore: cast_nullable_to_non_nullable
+              as AllowedRange?,
     ));
   }
 }
@@ -129,7 +159,8 @@ class _$_ParameterSchema implements _ParameterSchema {
   const _$_ParameterSchema(
       {required this.name,
       required this.type,
-      @JsonKey(name: 'required') required this.isRequired});
+      @JsonKey(name: 'required') required this.isRequired,
+      this.allowedRange});
 
   factory _$_ParameterSchema.fromJson(Map<String, dynamic> json) =>
       _$$_ParameterSchemaFromJson(json);
@@ -141,10 +172,12 @@ class _$_ParameterSchema implements _ParameterSchema {
   @override
   @JsonKey(name: 'required')
   final bool isRequired;
+  @override
+  final AllowedRange? allowedRange;
 
   @override
   String toString() {
-    return 'ParameterSchema(name: $name, type: $type, isRequired: $isRequired)';
+    return 'ParameterSchema(name: $name, type: $type, isRequired: $isRequired, allowedRange: $allowedRange)';
   }
 
   @override
@@ -155,12 +188,15 @@ class _$_ParameterSchema implements _ParameterSchema {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.isRequired, isRequired) ||
-                other.isRequired == isRequired));
+                other.isRequired == isRequired) &&
+            (identical(other.allowedRange, allowedRange) ||
+                other.allowedRange == allowedRange));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, type, isRequired);
+  int get hashCode =>
+      Object.hash(runtimeType, name, type, isRequired, allowedRange);
 
   @JsonKey(ignore: true)
   @override
@@ -178,10 +214,10 @@ class _$_ParameterSchema implements _ParameterSchema {
 
 abstract class _ParameterSchema implements ParameterSchema {
   const factory _ParameterSchema(
-          {required final String name,
-          required final ParameterSchemaType type,
-          @JsonKey(name: 'required') required final bool isRequired}) =
-      _$_ParameterSchema;
+      {required final String name,
+      required final ParameterSchemaType type,
+      @JsonKey(name: 'required') required final bool isRequired,
+      final AllowedRange? allowedRange}) = _$_ParameterSchema;
 
   factory _ParameterSchema.fromJson(Map<String, dynamic> json) =
       _$_ParameterSchema.fromJson;
@@ -193,6 +229,8 @@ abstract class _ParameterSchema implements ParameterSchema {
   @override
   @JsonKey(name: 'required')
   bool get isRequired;
+  @override
+  AllowedRange? get allowedRange;
   @override
   @JsonKey(ignore: true)
   _$$_ParameterSchemaCopyWith<_$_ParameterSchema> get copyWith =>

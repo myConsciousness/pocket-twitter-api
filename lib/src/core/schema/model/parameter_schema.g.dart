@@ -17,10 +17,18 @@ _$_ParameterSchema _$$_ParameterSchemaFromJson(Map json) => $checkedCreate(
           type: $checkedConvert(
               'type', (v) => $enumDecode(_$ParameterSchemaTypeEnumMap, v)),
           isRequired: $checkedConvert('required', (v) => v as bool),
+          allowedRange: $checkedConvert(
+              'allowed_range',
+              (v) => v == null
+                  ? null
+                  : AllowedRange.fromJson(Map<String, Object?>.from(v as Map))),
         );
         return val;
       },
-      fieldKeyMap: const {'isRequired': 'required'},
+      fieldKeyMap: const {
+        'isRequired': 'required',
+        'allowedRange': 'allowed_range'
+      },
     );
 
 Map<String, dynamic> _$$_ParameterSchemaToJson(_$_ParameterSchema instance) =>
@@ -28,6 +36,7 @@ Map<String, dynamic> _$$_ParameterSchemaToJson(_$_ParameterSchema instance) =>
       'name': instance.name,
       'type': _$ParameterSchemaTypeEnumMap[instance.type]!,
       'required': instance.isRequired,
+      'allowed_range': instance.allowedRange?.toJson(),
     };
 
 const _$ParameterSchemaTypeEnumMap = {

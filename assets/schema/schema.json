@@ -13,7 +13,11 @@
         {
           "name": "max_results",
           "type": "integer",
-          "required": false
+          "required": false,
+          "allowed_range": {
+            "start": 10,
+            "end": 100
+          }
         },
         {
           "name": "next_token",
