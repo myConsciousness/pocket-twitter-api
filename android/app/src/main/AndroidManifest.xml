@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.twitter_api_playground">
     <application
-        android:label="twitter_api_playground"
+        android:label="Pocket Twitter API"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
