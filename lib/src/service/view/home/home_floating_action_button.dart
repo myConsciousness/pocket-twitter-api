@@ -59,7 +59,9 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
                 ),
               );
             },
-          ).catchError((error) {});
+          ).catchError((error) {
+            print(error);
+          });
         },
         tooltip: 'Send Request',
         child: const Icon(Icons.send),

@@ -38,12 +38,41 @@ enum Endpoint {
     '/v2/tweets/counts/recent',
   ),
 
+  /// `/2/users`
+  users(
+    _usersService,
+    HttpMethod.get,
+    '/2/users',
+  ),
+
+  /// `/2/users/:id`
+  usersId(
+    _usersService,
+    HttpMethod.get,
+    '/2/users/:id',
+  ),
+
+  /// `/2/users/by`
+  usersBy(
+    _usersService,
+    HttpMethod.get,
+    '/2/users/by',
+  ),
+
+  /// `/2/users/by/username/:username`
+  usersByUsername(
+    _usersService,
+    HttpMethod.get,
+    '/2/users/by/username/:username',
+  ),
+
   /// `/v2/users/me`
   usersMe(
     _usersService,
     HttpMethod.get,
     '/v2/users/me',
-  );
+  ),
+  ;
 
   /// The service of this endpoint.
   final Service service;

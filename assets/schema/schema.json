@@ -122,6 +122,114 @@
   ],
   "users": [
     {
+      "endpoint": "/2/users",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read"],
+      "parameters": [
+        {
+          "name": "ids",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/2/users/:id",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/2/users/by",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read"],
+      "parameters": [
+        {
+          "name": "usernames",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/2/users/by/username/:username",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read"],
+      "parameters": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
       "endpoint": "/v2/users/me",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
