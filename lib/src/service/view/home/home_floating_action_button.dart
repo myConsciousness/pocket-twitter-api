@@ -52,7 +52,9 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
               animType: AnimType.rightSlide,
               title: e.title,
               desc: e.message,
-              btnOkOnPress: () {},
+              btnOkOnPress: () {
+                // Do Nothing.
+              },
             ).show();
 
             return;
@@ -67,7 +69,7 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
                   ref.watch(endpointStateProvider),
                   parameters,
                 ).execute(onRetry: (event) {
-                  // TODO: Do something on retry.
+                  // Do Nothing.
                 }).then(
                   (response) async {
                     ref.read(navigationCurrentIndexProvider.notifier).update(
@@ -83,8 +85,17 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
                       ),
                     );
                   },
-                ).catchError((error) {
-                  print(error);
+                ).catchError((_) {
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.error,
+                    animType: AnimType.rightSlide,
+                    title: 'Unknown Error',
+                    desc: 'Please retry after a while.',
+                    btnOkOnPress: () {
+                      // Do Nothing.
+                    },
+                  ).show();
                 }),
               ),
             ),
