@@ -32,7 +32,7 @@ class SchemaValidator {
         }
       }
 
-      if (schema.type == ParameterSchemaType.integer) {
+      if (parameter.isNotEmpty && schema.type == ParameterSchemaType.integer) {
         final value = int.tryParse(parameter);
         if (value == null) {
           throw InvalidParameterException(

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 import 'package:twitter_oauth2_pkce/twitter_oauth2_pkce.dart' as oauth2;
 
@@ -36,7 +37,7 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => FloatingActionButton(
-        onPressed: () async {
+        onPressed: () {
           final parameters = _parameters;
 
           try {
@@ -57,30 +58,37 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
             return;
           }
 
-          RequestSender(
-            await _fetchAccessToken(ref),
-            ref.watch(endpointStateProvider),
-            parameters,
-          ).execute(onRetry: (event) {
-            // TODO: Do something on retry.
-          }).then(
-            (response) async {
-              ref.read(navigationCurrentIndexProvider.notifier).update(
-                    ResultNavigationType.body.value,
-                  );
+          _fetchAccessToken(ref).then(
+            (accessToken) => showDialog(
+              context: context,
+              builder: (context) => FutureProgressDialog(
+                RequestSender(
+                  accessToken,
+                  ref.watch(endpointStateProvider),
+                  parameters,
+                ).execute(onRetry: (event) {
+                  // TODO: Do something on retry.
+                }).then(
+                  (response) async {
+                    ref.read(navigationCurrentIndexProvider.notifier).update(
+                          ResultNavigationType.body.value,
+                        );
 
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ResultPage(
-                    response: response,
-                  ),
-                ),
-              );
-            },
-          ).catchError((error) {
-            print(error);
-          });
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultPage(
+                          response: response,
+                        ),
+                      ),
+                    );
+                  },
+                ).catchError((error) {
+                  print(error);
+                }),
+              ),
+            ),
+          );
         },
         tooltip: 'Send Request',
         child: const Icon(Icons.send),

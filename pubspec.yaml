@@ -53,6 +53,7 @@ dependencies:
   url_launcher: ^6.1.8
   awesome_dialog: ^3.0.2
   flutter_launcher_icons: ^0.11.0
+  future_progress_dialog: ^0.2.1
 
 dev_dependencies:
   flutter_test:
