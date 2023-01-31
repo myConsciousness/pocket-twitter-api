@@ -23,54 +23,79 @@ class _EndpointStateNotifier extends StateNotifier<Endpoint> {
 const _tweetsService = Service.tweets;
 const _usersService = Service.users;
 
+const _httpGet = HttpMethod.get;
+const _httpPost = HttpMethod.post;
+const _httpDelete = HttpMethod.delete;
+
 enum Endpoint {
   /// `/tweets/search/recent`
   tweetsSearchRecent(
     _tweetsService,
-    HttpMethod.get,
+    _httpGet,
     '/v2/tweets/search/recent',
   ),
 
   /// `/tweets/counts/recent`
   tweetsCountsRecent(
     _tweetsService,
-    HttpMethod.get,
+    _httpGet,
     '/v2/tweets/counts/recent',
   ),
 
   /// `/2/users`
   users(
     _usersService,
-    HttpMethod.get,
+    _httpGet,
     '/2/users',
   ),
 
   /// `/2/users/:id`
   usersId(
     _usersService,
-    HttpMethod.get,
+    _httpGet,
     '/2/users/:id',
   ),
 
   /// `/2/users/by`
   usersBy(
     _usersService,
-    HttpMethod.get,
+    _httpGet,
     '/2/users/by',
   ),
 
   /// `/2/users/by/username/:username`
   usersByUsername(
     _usersService,
-    HttpMethod.get,
+    _httpGet,
     '/2/users/by/username/:username',
   ),
 
   /// `/v2/users/me`
   usersMe(
     _usersService,
-    HttpMethod.get,
+    _httpGet,
     '/v2/users/me',
+  ),
+
+  /// `/users/:source_user_id/blocking/:target_user_id`
+  usersSourceUserIdBlockingTargetUserId(
+    _usersService,
+    _httpDelete,
+    '/users/:source_user_id/blocking/:target_user_id',
+  ),
+
+  /// `/2/users/:id/blocking`
+  getUsersIdBlocking(
+    _usersService,
+    _httpGet,
+    '/2/users/:id/blocking',
+  ),
+
+  /// `/2/users/:id/blocking`
+  postUsersIdBlocking(
+    _usersService,
+    _httpPost,
+    '/2/users/:id/blocking',
   ),
   ;
 

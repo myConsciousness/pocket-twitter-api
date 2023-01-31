@@ -31,11 +31,16 @@ class _EndpointConverter implements JsonConverter<Endpoint, String> {
   const _EndpointConverter();
 
   @override
-  Endpoint fromJson(String json) =>
-      Endpoint.values.firstWhere((element) => element.unencodedUrl == json);
+  Endpoint fromJson(String json) => Endpoint.values.firstWhere((endpoint) {
+        final elements = json.split('#');
+
+        return elements[0] == endpoint.httpMethod.value &&
+            elements[1] == endpoint.unencodedUrl;
+      });
 
   @override
-  String toJson(Endpoint object) => object.unencodedUrl;
+  String toJson(Endpoint object) =>
+      '${object.httpMethod.value}#${object.unencodedUrl}';
 }
 
 class _ScopeConverter implements JsonConverter<Scope, String> {

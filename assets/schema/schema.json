@@ -1,7 +1,7 @@
 {
   "tweets": [
     {
-      "endpoint": "/v2/tweets/search/recent",
+      "endpoint": "GET#/v2/tweets/search/recent",
       "expansion_type": "tweets",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -82,7 +82,7 @@
       ]
     },
     {
-      "endpoint": "/v2/tweets/counts/recent",
+      "endpoint": "GET#/v2/tweets/counts/recent",
       "expansion_type": "tweets",
       "scopes": [],
       "parameters": [
@@ -126,7 +126,7 @@
   ],
   "users": [
     {
-      "endpoint": "/2/users",
+      "endpoint": "GET#/2/users",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -153,7 +153,7 @@
       ]
     },
     {
-      "endpoint": "/2/users/:id",
+      "endpoint": "GET#/2/users/:id",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -180,7 +180,7 @@
       ]
     },
     {
-      "endpoint": "/2/users/by",
+      "endpoint": "GET#/2/users/by",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -207,7 +207,7 @@
       ]
     },
     {
-      "endpoint": "/2/users/by/username/:username",
+      "endpoint": "GET#/2/users/by/username/:username",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -234,7 +234,7 @@
       ]
     },
     {
-      "endpoint": "/v2/users/me",
+      "endpoint": "GET#/v2/users/me",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -252,6 +252,81 @@
           "name": "user.fields",
           "type": "picklist",
           "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/users/:source_user_id/blocking/:target_user_id",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "block.write"],
+      "parameters": [
+        {
+          "name": "source_user_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "target_user_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/users/:id/blocking",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "block.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 1000
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/users/:id/blocking",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "block.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "target_user_id",
+          "type": "string",
+          "required": true
         }
       ]
     }

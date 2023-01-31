@@ -99,6 +99,25 @@ class RequestSender extends ParameterHelper {
           tweetFields: tweetFields,
           userFields: userFields,
         );
+      case Endpoint.usersSourceUserIdBlockingTargetUserId:
+        return await twitter.users.destroyBlock(
+          userId: requiredStringValueOf('source_user_id'),
+          targetUserId: requiredStringValueOf('target_user_id'),
+        );
+      case Endpoint.getUsersIdBlocking:
+        return await twitter.users.lookupBlockingUsers(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+        );
+      case Endpoint.postUsersIdBlocking:
+        return twitter.users.createBlock(
+          userId: requiredStringValueOf('id'),
+          targetUserId: requiredStringValueOf('target_user_id'),
+        );
     }
   }
 }
