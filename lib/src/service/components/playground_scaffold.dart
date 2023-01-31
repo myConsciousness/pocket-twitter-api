@@ -42,7 +42,7 @@ class PlaygroundScaffold extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Twitter API Playground',
+          'Pocket Twitter API',
           style: TextStyle(
             fontFamily: Font.pico.fontFamily,
             color: Colors.blue,

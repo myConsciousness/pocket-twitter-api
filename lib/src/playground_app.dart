@@ -25,7 +25,7 @@ class PlaygroundApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => MaterialApp(
-        title: 'Twitter API Playground',
+        title: 'Pocket Twitter API',
         theme: ThemeData(
           fontFamily: Font.firaCode.fontFamily,
           useMaterial3: true,
