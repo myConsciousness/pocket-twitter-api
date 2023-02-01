@@ -42,6 +42,13 @@ enum Endpoint {
     '/v2/tweets/counts/recent',
   ),
 
+  /// `/2/tweets`
+  tweets(
+    _tweetsService,
+    _httpPost,
+    '/2/tweets',
+  ),
+
   /// `/2/users`
   users(
     _usersService,
@@ -96,6 +103,55 @@ enum Endpoint {
     _usersService,
     _httpPost,
     '/2/users/:id/blocking',
+  ),
+
+  /// `/2/users/:source_user_id/following/:target_user_id`
+  usersSourceUserIdFollowingTargetUserId(
+    _usersService,
+    _httpDelete,
+    '/2/users/:source_user_id/following/:target_user_id',
+  ),
+
+  /// `/2/users/:id/following`
+  postUsersIdFollowing(
+    _usersService,
+    _httpPost,
+    '/2/users/:id/following',
+  ),
+
+  /// `/2/users/:id/followers`
+  usersIdFollowers(
+    _usersService,
+    _httpGet,
+    '/2/users/:id/followers',
+  ),
+
+  /// `/2/users/:id/following`
+  getUsersIdFollowing(
+    _usersService,
+    _httpGet,
+    '/2/users/:id/following',
+  ),
+
+  /// `/2/users/:source_user_id/muting/:target_user_id`
+  usersSourceUserIdMutingTargetUserId(
+    _usersService,
+    _httpDelete,
+    '/2/users/:source_user_id/muting/:target_user_id',
+  ),
+
+  /// `/2/users/:id/muting`
+  postUsersIdMuting(
+    _usersService,
+    _httpPost,
+    '/2/users/:id/muting',
+  ),
+
+  /// `/2/users/:id/muting`
+  getUsersIdMuting(
+    _usersService,
+    _httpGet,
+    '/2/users/:id/muting',
   ),
   ;
 

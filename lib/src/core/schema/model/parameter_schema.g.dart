@@ -42,6 +42,7 @@ Map<String, dynamic> _$$_ParameterSchemaToJson(_$_ParameterSchema instance) =>
 const _$ParameterSchemaTypeEnumMap = {
   ParameterSchemaType.string: 'string',
   ParameterSchemaType.integer: 'integer',
+  ParameterSchemaType.boolean: 'boolean',
   ParameterSchemaType.radio: 'radio',
   ParameterSchemaType.picklist: 'picklist',
   ParameterSchemaType.datetime: 'datetime',

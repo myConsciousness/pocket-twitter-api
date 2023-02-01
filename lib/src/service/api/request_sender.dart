@@ -65,6 +65,10 @@ class RequestSender extends ParameterHelper {
             'granularity',
           ),
         );
+      case Endpoint.tweets:
+        return await twitter.tweets.createTweet(
+          text: stringValueOf('text') ?? '',
+        );
       case Endpoint.users:
         return await twitter.users.lookupByIds(
           userIds: requiredStringValuesOf('ids'),
@@ -117,6 +121,53 @@ class RequestSender extends ParameterHelper {
         return twitter.users.createBlock(
           userId: requiredStringValueOf('id'),
           targetUserId: requiredStringValueOf('target_user_id'),
+        );
+      case Endpoint.usersSourceUserIdFollowingTargetUserId:
+        return twitter.users.destroyFollow(
+          userId: requiredStringValueOf('source_user_id'),
+          targetUserId: requiredStringValueOf('target_user_id'),
+        );
+      case Endpoint.postUsersIdFollowing:
+        return twitter.users.createFollow(
+          userId: requiredStringValueOf('id'),
+          targetUserId: requiredStringValueOf('target_user_id'),
+        );
+      case Endpoint.usersIdFollowers:
+        return twitter.users.lookupFollowers(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+        );
+      case Endpoint.getUsersIdFollowing:
+        return twitter.users.lookupFollowings(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+        );
+      case Endpoint.usersSourceUserIdMutingTargetUserId:
+        return twitter.users.destroyMute(
+          userId: requiredStringValueOf('source_user_id'),
+          targetUserId: requiredStringValueOf('target_user_id'),
+        );
+      case Endpoint.postUsersIdMuting:
+        return twitter.users.createMute(
+          userId: requiredStringValueOf('id'),
+          targetUserId: requiredStringValueOf('target_user_id'),
+        );
+      case Endpoint.getUsersIdMuting:
+        return twitter.users.lookupMutingUsers(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
         );
     }
   }

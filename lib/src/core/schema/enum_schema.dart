@@ -5,7 +5,7 @@
 // 📦 Package imports:
 import 'package:twitter_api_v2/twitter_api_v2.dart';
 
-const enumSchema = <String, List<Serializable>>{
+final enumSchema = <String, List<Serializable>>{
   'tweets.expansions': TweetExpansion.values,
   'users.expansions': UserExpansion.values,
   'tweet.fields': TweetField.values,
@@ -15,4 +15,7 @@ const enumSchema = <String, List<Serializable>>{
   'media.fields': MediaField.values,
   'sort_order': SortOrder.values,
   'granularity': TweetCountGranularity.values,
+  'reply_settings': ReplySetting.values
+      .where((element) => element != ReplySetting.everyone)
+      .toList(),
 };

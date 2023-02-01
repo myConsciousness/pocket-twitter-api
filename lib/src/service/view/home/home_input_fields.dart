@@ -67,6 +67,7 @@ class PlaygroundInputFields extends ConsumerWidget {
       switch (parameter.type) {
         case ParameterSchemaType.string:
         case ParameterSchemaType.integer:
+        case ParameterSchemaType.boolean:
           inputFields.add(
             PlaygroundTextField(
               controller: controller,
