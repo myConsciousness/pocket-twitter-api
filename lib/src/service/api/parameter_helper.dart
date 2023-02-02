@@ -20,9 +20,19 @@ abstract class ParameterHelper {
   String? stringValueOf(final String fieldName) =>
       _parameters[fieldName]!.isNotEmpty ? _parameters[fieldName] : null;
 
+  List<String>? stringValuesOf(final String fieldName) =>
+      _parameters[fieldName]!.isNotEmpty
+          ? _parameters[fieldName]!.split(',')
+          : null;
+
   int? intValueOf(final String fieldName) => _parameters[fieldName]!.isNotEmpty
       ? int.parse(_parameters[fieldName]!)
       : null;
+
+  bool? boolValueOf(final String fieldName) =>
+      _parameters[fieldName]!.isNotEmpty
+          ? _parameters[fieldName]! == 'true'
+          : null;
 
   T? enumValueOf<T extends Serializable>(
     final T Function(String value) valueOf,

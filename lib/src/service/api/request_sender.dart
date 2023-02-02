@@ -35,7 +35,7 @@ class RequestSender extends ParameterHelper {
     );
 
     switch (_endpoint) {
-      case Endpoint.tweetsSearchRecent:
+      case Endpoint.getTweetsSearchRecent:
         return await twitter.tweets.searchRecent(
           query: requiredStringValueOf('query'),
           maxResults: intValueOf('max_results'),
@@ -52,7 +52,7 @@ class RequestSender extends ParameterHelper {
           pollFields: pollFields,
           mediaFields: mediaFields,
         );
-      case Endpoint.tweetsCountsRecent:
+      case Endpoint.getTweetsCountsRecent:
         return await twitter.tweets.countRecent(
           query: requiredStringValueOf('query'),
           nextToken: stringValueOf('next_token'),
@@ -65,45 +65,153 @@ class RequestSender extends ParameterHelper {
             'granularity',
           ),
         );
-      case Endpoint.tweets:
+      case Endpoint.deleteTweetsId:
+        return await twitter.tweets.destroyTweet(
+          tweetId: requiredStringValueOf('id'),
+        );
+      case Endpoint.postTweets:
+        final mediaIds = stringValuesOf('media.media_ids');
+        final placeId = stringValueOf('geo.place_id');
+        final pollDuration = intValueOf('poll.duration_minutes');
+        final pollOptions = stringValuesOf('poll.options');
+        final inReplyToTweetId = stringValueOf('reply.in_reply_to_tweet_id');
+
         return await twitter.tweets.createTweet(
           text: stringValueOf('text') ?? '',
+          quoteTweetId: stringValueOf('quote_tweet_id'),
+          forSuperFollowersOnly: boolValueOf('for_super_followers_only'),
+          replySetting: enumValueOf(
+            ReplySetting.valueOf,
+            'reply_settings',
+          ),
+          directMessageDeepLink: stringValueOf('direct_message_deep_link'),
+          media: mediaIds != null
+              ? TweetMediaParam(
+                  mediaIds: mediaIds,
+                  taggedUserIds: stringValuesOf(
+                    'media.tagged_user_ids',
+                  ),
+                )
+              : null,
+          geo: placeId != null
+              ? TweetGeoParam(
+                  placeId: placeId,
+                )
+              : null,
+          poll: pollDuration != null && pollOptions != null
+              ? TweetPollParam(
+                  duration: Duration(minutes: pollDuration),
+                  options: pollOptions)
+              : null,
+          reply: inReplyToTweetId != null
+              ? TweetReplyParam(
+                  inReplyToTweetId: inReplyToTweetId,
+                  excludeReplyUserIds: stringValuesOf(
+                    'reply.exclude_reply_user_ids',
+                  ),
+                )
+              : null,
         );
-      case Endpoint.users:
+      case Endpoint.deleteUsersIdLikesTweetId:
+        return await twitter.tweets.destroyLike(
+          userId: requiredStringValueOf('id'),
+          tweetId: requiredStringValueOf('tweet_id'),
+        );
+      case Endpoint.postUsersIdLikes:
+        return await twitter.tweets.createLike(
+          userId: requiredStringValueOf('id'),
+          tweetId: requiredStringValueOf('tweet_id'),
+        );
+      case Endpoint.getTweetsIdLikingUsers:
+        return await twitter.tweets.lookupLikingUsers(
+          tweetId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+        );
+      case Endpoint.getUsersIdLikedTweets:
+        return await twitter.tweets.lookupLikedTweets(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: tweetExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+          placeFields: placeFields,
+          pollFields: pollFields,
+          mediaFields: mediaFields,
+        );
+      case Endpoint.deleteUsersIdRetweetsSourceTweetId:
+        return await twitter.tweets.destroyRetweet(
+          userId: requiredStringValueOf('id'),
+          tweetId: requiredStringValueOf('source_tweet_id'),
+        );
+      case Endpoint.postUsersIdRetweets:
+        return await twitter.tweets.createRetweet(
+          userId: requiredStringValueOf('id'),
+          tweetId: requiredStringValueOf('tweet_id'),
+        );
+      case Endpoint.getTweetsIdRetweetedBy:
+        return await twitter.tweets.lookupRetweetedUsers(
+          tweetId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+          placeFields: placeFields,
+          pollFields: pollFields,
+          mediaFields: mediaFields,
+        );
+      case Endpoint.getTweetsIdQuoteTweets:
+        return await twitter.tweets.lookupQuoteTweets(
+          tweetId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: tweetExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+          placeFields: placeFields,
+          pollFields: pollFields,
+          mediaFields: mediaFields,
+        );
+      case Endpoint.getUsers:
         return await twitter.users.lookupByIds(
           userIds: requiredStringValuesOf('ids'),
           expansions: userExpansions,
           tweetFields: tweetFields,
           userFields: userFields,
         );
-      case Endpoint.usersId:
+      case Endpoint.getUsersId:
         return await twitter.users.lookupById(
           userId: requiredStringValueOf('id'),
           expansions: userExpansions,
           tweetFields: tweetFields,
           userFields: userFields,
         );
-      case Endpoint.usersBy:
+      case Endpoint.getUsersBy:
         return await twitter.users.lookupByNames(
           usernames: requiredStringValuesOf('usernames'),
           expansions: userExpansions,
           tweetFields: tweetFields,
           userFields: userFields,
         );
-      case Endpoint.usersByUsername:
+      case Endpoint.getUsersByUsernameUsername:
         return await twitter.users.lookupByName(
           username: requiredStringValueOf('username'),
           expansions: userExpansions,
           tweetFields: tweetFields,
           userFields: userFields,
         );
-      case Endpoint.usersMe:
+      case Endpoint.getUsersMe:
         return await twitter.users.lookupMe(
           expansions: userExpansions,
           tweetFields: tweetFields,
           userFields: userFields,
         );
-      case Endpoint.usersSourceUserIdBlockingTargetUserId:
+      case Endpoint.deleteUsersSourceUserIdBlockingTargetUserId:
         return await twitter.users.destroyBlock(
           userId: requiredStringValueOf('source_user_id'),
           targetUserId: requiredStringValueOf('target_user_id'),
@@ -122,7 +230,7 @@ class RequestSender extends ParameterHelper {
           userId: requiredStringValueOf('id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
-      case Endpoint.usersSourceUserIdFollowingTargetUserId:
+      case Endpoint.deleteUsersSourceUserIdFollowingTargetUserId:
         return twitter.users.destroyFollow(
           userId: requiredStringValueOf('source_user_id'),
           targetUserId: requiredStringValueOf('target_user_id'),
@@ -132,7 +240,7 @@ class RequestSender extends ParameterHelper {
           userId: requiredStringValueOf('id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
-      case Endpoint.usersIdFollowers:
+      case Endpoint.getUsersIdFollowers:
         return twitter.users.lookupFollowers(
           userId: requiredStringValueOf('id'),
           maxResults: intValueOf('max_results'),
@@ -150,7 +258,7 @@ class RequestSender extends ParameterHelper {
           tweetFields: tweetFields,
           userFields: userFields,
         );
-      case Endpoint.usersSourceUserIdMutingTargetUserId:
+      case Endpoint.deleteUsersSourceUserIdMutingTargetUserId:
         return twitter.users.destroyMute(
           userId: requiredStringValueOf('source_user_id'),
           targetUserId: requiredStringValueOf('target_user_id'),

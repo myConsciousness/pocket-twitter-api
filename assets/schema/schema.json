@@ -1,7 +1,7 @@
 {
   "tweets": [
     {
-      "endpoint": "GET#/v2/tweets/search/recent",
+      "endpoint": "GET#/2/tweets/search/recent",
       "expansion_type": "tweets",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [
@@ -82,7 +82,7 @@
       ]
     },
     {
-      "endpoint": "GET#/v2/tweets/counts/recent",
+      "endpoint": "GET#/2/tweets/counts/recent",
       "expansion_type": "tweets",
       "scopes": [],
       "parameters": [
@@ -124,6 +124,18 @@
       ]
     },
     {
+      "endpoint": "DELETE#/2/tweets/:id",
+      "expansion_type": "tweets",
+      "scopes": ["tweet.read", "tweet.write", "users.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
       "endpoint": "POST#/2/tweets",
       "expansion_type": "tweets",
       "scopes": ["tweet.read", "tweet.write", "users.read"],
@@ -134,17 +146,7 @@
           "required": false
         },
         {
-          "name": "reply_settings",
-          "type": "radio",
-          "required": false
-        },
-        {
           "name": "quote_tweet_id",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "direct_message_deep_link",
           "type": "string",
           "required": false
         },
@@ -154,17 +156,22 @@
           "required": false
         },
         {
+          "name": "reply_settings",
+          "type": "radio",
+          "required": false
+        },
+        {
+          "name": "direct_message_deep_link",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "reply.exclude_reply_user_ids",
           "type": "string",
           "required": false
         },
         {
           "name": "reply.in_reply_to_tweet_id",
-          "type": "string",
-          "required": false
-        },
-        {
-          "name": "geo.place_id",
           "type": "string",
           "required": false
         },
@@ -179,13 +186,280 @@
           "required": false
         },
         {
+          "name": "geo.place_id",
+          "type": "string",
+          "required": false
+        },
+        {
           "name": "poll.duration_minutes",
           "type": "integer",
           "required": false
         },
         {
           "name": "poll.options",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/2/users/:id/likes/:tweet_id",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "like.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tweet_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/users/:id/likes",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "like.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tweet_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/tweets/:id/liking_users",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "like.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
           "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/users/:id/liked_tweets",
+      "expansion_type": "tweets",
+      "scopes": ["tweet.read", "users.read", "like.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 10,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "place.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "poll.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "media.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/2/users/:id/retweets/:source_tweet_id",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "tweet.write", "users.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "source_tweet_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/users/:id/retweets",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "tweet.write", "users.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tweet_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/tweets/:id/retweeted_by",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/tweets/:id/quote_tweets",
+      "expansion_type": "tweets",
+      "scopes": ["tweet.read", "users.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 10,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "place.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "poll.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "media.fields",
+          "type": "picklist",
           "required": false
         }
       ]
@@ -301,7 +575,7 @@
       ]
     },
     {
-      "endpoint": "GET#/v2/users/me",
+      "endpoint": "GET#/2/users/me",
       "expansion_type": "users",
       "scopes": ["tweet.read", "users.read"],
       "parameters": [

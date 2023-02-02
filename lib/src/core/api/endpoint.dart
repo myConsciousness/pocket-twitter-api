@@ -2,6 +2,8 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 // 📦 Package imports:
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart';
@@ -15,7 +17,7 @@ final endpointStateProvider =
 });
 
 class _EndpointStateNotifier extends StateNotifier<Endpoint> {
-  _EndpointStateNotifier() : super(Endpoint.tweetsSearchRecent);
+  _EndpointStateNotifier() : super(Endpoint.getTweetsSearchRecent);
 
   void update(final Endpoint endpoint) => state = endpoint;
 }
@@ -28,189 +30,189 @@ const _httpPost = HttpMethod.post;
 const _httpDelete = HttpMethod.delete;
 
 enum Endpoint {
-  /// `/tweets/search/recent`
-  tweetsSearchRecent(
+  /// `GET /2/tweets/search/recent`
+  getTweetsSearchRecent(
     _tweetsService,
     _httpGet,
-    '/v2/tweets/search/recent',
+    '/2/tweets/search/recent',
   ),
 
-  /// `/tweets/counts/recent`
-  tweetsCountsRecent(
+  /// `GET /2/tweets/counts/recent`
+  getTweetsCountsRecent(
     _tweetsService,
     _httpGet,
-    '/v2/tweets/counts/recent',
+    '/2/tweets/counts/recent',
   ),
 
-  /// `/2/tweets/:id`
-  tweetsId(
+  /// `DELETE /2/tweets/:id`
+  deleteTweetsId(
     _tweetsService,
     _httpDelete,
     '/2/tweets/:id',
   ),
 
-  /// `/2/tweets`
-  tweets(
+  /// `POST /2/tweets`
+  postTweets(
     _tweetsService,
     _httpPost,
     '/2/tweets',
   ),
 
-  /// `/2/users/:id/likes/:tweet_id`
-  usersIdLikesTweetId(
+  /// `DELETE /2/users/:id/likes/:tweet_id`
+  deleteUsersIdLikesTweetId(
     _tweetsService,
     _httpDelete,
     '/2/users/:id/likes/:tweet_id',
   ),
 
-  /// `/2/users/:id/likes`
-  usersIdLikes(
+  /// `POST /2/users/:id/likes`
+  postUsersIdLikes(
     _tweetsService,
     _httpPost,
     '/2/users/:id/likes',
   ),
 
-  /// `/2/tweets/:id/liking_users`
-  tweetsIdLikingUsers(
+  /// `GET /2/tweets/:id/liking_users`
+  getTweetsIdLikingUsers(
     _tweetsService,
     _httpGet,
     '/2/tweets/:id/liking_users',
   ),
 
-  /// `/2/users/:id/liked_tweets`
-  usersIdLikedTweets(
+  /// `GET /2/users/:id/liked_tweets`
+  getUsersIdLikedTweets(
     _tweetsService,
     _httpGet,
     '/2/users/:id/liked_tweets',
   ),
 
-  /// `/2/users/:id/retweets/:source_tweet_id`
-  usersIdRetweetsSourceTweetId(
+  /// `DELETE /2/users/:id/retweets/:source_tweet_id`
+  deleteUsersIdRetweetsSourceTweetId(
     _tweetsService,
     _httpDelete,
     '/2/users/:id/retweets/:source_tweet_id',
   ),
 
-  /// `/2/users/:id/retweets`
-  usersIdRetweets(
+  /// `POST /2/users/:id/retweets`
+  postUsersIdRetweets(
     _tweetsService,
     _httpPost,
     '/2/users/:id/retweets',
   ),
 
-  /// `/2/tweets/:id/retweeted_by`
-  tweetsIdRetweetedBy(
+  /// `GET /2/tweets/:id/retweeted_by`
+  getTweetsIdRetweetedBy(
     _tweetsService,
     _httpGet,
     '/2/tweets/:id/retweeted_by',
   ),
 
-  /// `/2/tweets/:id/quote_tweets`
-  tweetsIdQuoteTweets(
+  /// `GET /2/tweets/:id/quote_tweets`
+  getTweetsIdQuoteTweets(
     _tweetsService,
     _httpGet,
     '/2/tweets/:id/quote_tweets',
   ),
 
-  /// `/2/users`
-  users(
+  /// `GET /2/users`
+  getUsers(
     _usersService,
     _httpGet,
     '/2/users',
   ),
 
-  /// `/2/users/:id`
-  usersId(
+  /// `GET /2/users/:id`
+  getUsersId(
     _usersService,
     _httpGet,
     '/2/users/:id',
   ),
 
-  /// `/2/users/by`
-  usersBy(
+  /// `GET /2/users/by`
+  getUsersBy(
     _usersService,
     _httpGet,
     '/2/users/by',
   ),
 
-  /// `/2/users/by/username/:username`
-  usersByUsername(
+  /// `GET /2/users/by/username/:username`
+  getUsersByUsernameUsername(
     _usersService,
     _httpGet,
     '/2/users/by/username/:username',
   ),
 
-  /// `/v2/users/me`
-  usersMe(
+  /// `GET /2/users/me`
+  getUsersMe(
     _usersService,
     _httpGet,
-    '/v2/users/me',
+    '/2/users/me',
   ),
 
-  /// `/users/:source_user_id/blocking/:target_user_id`
-  usersSourceUserIdBlockingTargetUserId(
+  /// `DELETE /users/:source_user_id/blocking/:target_user_id`
+  deleteUsersSourceUserIdBlockingTargetUserId(
     _usersService,
     _httpDelete,
     '/users/:source_user_id/blocking/:target_user_id',
   ),
 
-  /// `/2/users/:id/blocking`
+  /// `GET /2/users/:id/blocking`
   getUsersIdBlocking(
     _usersService,
     _httpGet,
     '/2/users/:id/blocking',
   ),
 
-  /// `/2/users/:id/blocking`
+  /// `POST /2/users/:id/blocking`
   postUsersIdBlocking(
     _usersService,
     _httpPost,
     '/2/users/:id/blocking',
   ),
 
-  /// `/2/users/:source_user_id/following/:target_user_id`
-  usersSourceUserIdFollowingTargetUserId(
+  /// `DELETE /2/users/:source_user_id/following/:target_user_id`
+  deleteUsersSourceUserIdFollowingTargetUserId(
     _usersService,
     _httpDelete,
     '/2/users/:source_user_id/following/:target_user_id',
   ),
 
-  /// `/2/users/:id/following`
+  /// `POST /2/users/:id/following`
   postUsersIdFollowing(
     _usersService,
     _httpPost,
     '/2/users/:id/following',
   ),
 
-  /// `/2/users/:id/followers`
-  usersIdFollowers(
+  /// `GET /2/users/:id/followers`
+  getUsersIdFollowers(
     _usersService,
     _httpGet,
     '/2/users/:id/followers',
   ),
 
-  /// `/2/users/:id/following`
+  /// `GET /2/users/:id/following`
   getUsersIdFollowing(
     _usersService,
     _httpGet,
     '/2/users/:id/following',
   ),
 
-  /// `/2/users/:source_user_id/muting/:target_user_id`
-  usersSourceUserIdMutingTargetUserId(
+  /// `DELETE /2/users/:source_user_id/muting/:target_user_id`
+  deleteUsersSourceUserIdMutingTargetUserId(
     _usersService,
     _httpDelete,
     '/2/users/:source_user_id/muting/:target_user_id',
   ),
 
-  /// `/2/users/:id/muting`
+  /// `POST /2/users/:id/muting`
   postUsersIdMuting(
     _usersService,
     _httpPost,
     '/2/users/:id/muting',
   ),
 
-  /// `/2/users/:id/muting`
+  /// `GET /2/users/:id/muting`
   getUsersIdMuting(
     _usersService,
     _httpGet,

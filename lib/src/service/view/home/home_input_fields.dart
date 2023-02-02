@@ -67,12 +67,21 @@ class PlaygroundInputFields extends ConsumerWidget {
       switch (parameter.type) {
         case ParameterSchemaType.string:
         case ParameterSchemaType.integer:
-        case ParameterSchemaType.boolean:
           inputFields.add(
             PlaygroundTextField(
               controller: controller,
               labelText:
                   parameter.isRequired ? '$fieldName (required)' : fieldName,
+            ),
+          );
+
+          break;
+        case ParameterSchemaType.boolean:
+          inputFields.add(
+            PlaygroundRadioList(
+              controller: controller,
+              labelText: fieldName,
+              items: const ['true', 'false'],
             ),
           );
 
