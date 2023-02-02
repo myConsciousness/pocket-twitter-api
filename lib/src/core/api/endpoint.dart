@@ -42,11 +42,74 @@ enum Endpoint {
     '/v2/tweets/counts/recent',
   ),
 
+  /// `/2/tweets/:id`
+  tweetsId(
+    _tweetsService,
+    _httpDelete,
+    '/2/tweets/:id',
+  ),
+
   /// `/2/tweets`
   tweets(
     _tweetsService,
     _httpPost,
     '/2/tweets',
+  ),
+
+  /// `/2/users/:id/likes/:tweet_id`
+  usersIdLikesTweetId(
+    _tweetsService,
+    _httpDelete,
+    '/2/users/:id/likes/:tweet_id',
+  ),
+
+  /// `/2/users/:id/likes`
+  usersIdLikes(
+    _tweetsService,
+    _httpPost,
+    '/2/users/:id/likes',
+  ),
+
+  /// `/2/tweets/:id/liking_users`
+  tweetsIdLikingUsers(
+    _tweetsService,
+    _httpGet,
+    '/2/tweets/:id/liking_users',
+  ),
+
+  /// `/2/users/:id/liked_tweets`
+  usersIdLikedTweets(
+    _tweetsService,
+    _httpGet,
+    '/2/users/:id/liked_tweets',
+  ),
+
+  /// `/2/users/:id/retweets/:source_tweet_id`
+  usersIdRetweetsSourceTweetId(
+    _tweetsService,
+    _httpDelete,
+    '/2/users/:id/retweets/:source_tweet_id',
+  ),
+
+  /// `/2/users/:id/retweets`
+  usersIdRetweets(
+    _tweetsService,
+    _httpPost,
+    '/2/users/:id/retweets',
+  ),
+
+  /// `/2/tweets/:id/retweeted_by`
+  tweetsIdRetweetedBy(
+    _tweetsService,
+    _httpGet,
+    '/2/tweets/:id/retweeted_by',
+  ),
+
+  /// `/2/tweets/:id/quote_tweets`
+  tweetsIdQuoteTweets(
+    _tweetsService,
+    _httpGet,
+    '/2/tweets/:id/quote_tweets',
   ),
 
   /// `/2/users`
