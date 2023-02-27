@@ -21,7 +21,10 @@ enum Service {
   tweets('Tweets Service'),
 
   /// Users Service.
-  users('Users Service');
+  users('Users Service'),
+
+  /// Lists Service.
+  lists('Lists Service');
 
   /// The item name of drawer menu.
   final String itemName;

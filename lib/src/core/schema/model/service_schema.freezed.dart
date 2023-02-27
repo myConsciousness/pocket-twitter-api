@@ -22,6 +22,7 @@ ServiceSchema _$ServiceSchemaFromJson(Map<String, dynamic> json) {
 mixin _$ServiceSchema {
   List<EndpointSchema> get tweets => throw _privateConstructorUsedError;
   List<EndpointSchema> get users => throw _privateConstructorUsedError;
+  List<EndpointSchema> get lists => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,10 @@ abstract class $ServiceSchemaCopyWith<$Res> {
           ServiceSchema value, $Res Function(ServiceSchema) then) =
       _$ServiceSchemaCopyWithImpl<$Res, ServiceSchema>;
   @useResult
-  $Res call({List<EndpointSchema> tweets, List<EndpointSchema> users});
+  $Res call(
+      {List<EndpointSchema> tweets,
+      List<EndpointSchema> users,
+      List<EndpointSchema> lists});
 }
 
 /// @nodoc
@@ -53,6 +57,7 @@ class _$ServiceSchemaCopyWithImpl<$Res, $Val extends ServiceSchema>
   $Res call({
     Object? tweets = null,
     Object? users = null,
+    Object? lists = null,
   }) {
     return _then(_value.copyWith(
       tweets: null == tweets
@@ -62,6 +67,10 @@ class _$ServiceSchemaCopyWithImpl<$Res, $Val extends ServiceSchema>
       users: null == users
           ? _value.users
           : users // ignore: cast_nullable_to_non_nullable
+              as List<EndpointSchema>,
+      lists: null == lists
+          ? _value.lists
+          : lists // ignore: cast_nullable_to_non_nullable
               as List<EndpointSchema>,
     ) as $Val);
   }
@@ -75,7 +84,10 @@ abstract class _$$_ServiceSchemaCopyWith<$Res>
       __$$_ServiceSchemaCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<EndpointSchema> tweets, List<EndpointSchema> users});
+  $Res call(
+      {List<EndpointSchema> tweets,
+      List<EndpointSchema> users,
+      List<EndpointSchema> lists});
 }
 
 /// @nodoc
@@ -91,6 +103,7 @@ class __$$_ServiceSchemaCopyWithImpl<$Res>
   $Res call({
     Object? tweets = null,
     Object? users = null,
+    Object? lists = null,
   }) {
     return _then(_$_ServiceSchema(
       tweets: null == tweets
@@ -101,6 +114,10 @@ class __$$_ServiceSchemaCopyWithImpl<$Res>
           ? _value._users
           : users // ignore: cast_nullable_to_non_nullable
               as List<EndpointSchema>,
+      lists: null == lists
+          ? _value._lists
+          : lists // ignore: cast_nullable_to_non_nullable
+              as List<EndpointSchema>,
     ));
   }
 }
@@ -110,9 +127,11 @@ class __$$_ServiceSchemaCopyWithImpl<$Res>
 class _$_ServiceSchema extends _ServiceSchema {
   const _$_ServiceSchema(
       {required final List<EndpointSchema> tweets,
-      required final List<EndpointSchema> users})
+      required final List<EndpointSchema> users,
+      required final List<EndpointSchema> lists})
       : _tweets = tweets,
         _users = users,
+        _lists = lists,
         super._();
 
   factory _$_ServiceSchema.fromJson(Map<String, dynamic> json) =>
@@ -134,9 +153,17 @@ class _$_ServiceSchema extends _ServiceSchema {
     return EqualUnmodifiableListView(_users);
   }
 
+  final List<EndpointSchema> _lists;
+  @override
+  List<EndpointSchema> get lists {
+    if (_lists is EqualUnmodifiableListView) return _lists;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_lists);
+  }
+
   @override
   String toString() {
-    return 'ServiceSchema(tweets: $tweets, users: $users)';
+    return 'ServiceSchema(tweets: $tweets, users: $users, lists: $lists)';
   }
 
   @override
@@ -145,7 +172,8 @@ class _$_ServiceSchema extends _ServiceSchema {
         (other.runtimeType == runtimeType &&
             other is _$_ServiceSchema &&
             const DeepCollectionEquality().equals(other._tweets, _tweets) &&
-            const DeepCollectionEquality().equals(other._users, _users));
+            const DeepCollectionEquality().equals(other._users, _users) &&
+            const DeepCollectionEquality().equals(other._lists, _lists));
   }
 
   @JsonKey(ignore: true)
@@ -153,7 +181,8 @@ class _$_ServiceSchema extends _ServiceSchema {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_tweets),
-      const DeepCollectionEquality().hash(_users));
+      const DeepCollectionEquality().hash(_users),
+      const DeepCollectionEquality().hash(_lists));
 
   @JsonKey(ignore: true)
   @override
@@ -172,7 +201,8 @@ class _$_ServiceSchema extends _ServiceSchema {
 abstract class _ServiceSchema extends ServiceSchema {
   const factory _ServiceSchema(
       {required final List<EndpointSchema> tweets,
-      required final List<EndpointSchema> users}) = _$_ServiceSchema;
+      required final List<EndpointSchema> users,
+      required final List<EndpointSchema> lists}) = _$_ServiceSchema;
   const _ServiceSchema._() : super._();
 
   factory _ServiceSchema.fromJson(Map<String, dynamic> json) =
@@ -182,6 +212,8 @@ abstract class _ServiceSchema extends ServiceSchema {
   List<EndpointSchema> get tweets;
   @override
   List<EndpointSchema> get users;
+  @override
+  List<EndpointSchema> get lists;
   @override
   @JsonKey(ignore: true)
   _$$_ServiceSchemaCopyWith<_$_ServiceSchema> get copyWith =>

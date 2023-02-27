@@ -226,22 +226,22 @@ class RequestSender extends ParameterHelper {
           userFields: userFields,
         );
       case Endpoint.postUsersIdBlocking:
-        return twitter.users.createBlock(
+        return await twitter.users.createBlock(
           userId: requiredStringValueOf('id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
       case Endpoint.deleteUsersSourceUserIdFollowingTargetUserId:
-        return twitter.users.destroyFollow(
+        return await twitter.users.destroyFollow(
           userId: requiredStringValueOf('source_user_id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
       case Endpoint.postUsersIdFollowing:
-        return twitter.users.createFollow(
+        return await twitter.users.createFollow(
           userId: requiredStringValueOf('id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
       case Endpoint.getUsersIdFollowers:
-        return twitter.users.lookupFollowers(
+        return await twitter.users.lookupFollowers(
           userId: requiredStringValueOf('id'),
           maxResults: intValueOf('max_results'),
           paginationToken: stringValueOf('pagination_token'),
@@ -250,7 +250,7 @@ class RequestSender extends ParameterHelper {
           userFields: userFields,
         );
       case Endpoint.getUsersIdFollowing:
-        return twitter.users.lookupFollowings(
+        return await twitter.users.lookupFollowings(
           userId: requiredStringValueOf('id'),
           maxResults: intValueOf('max_results'),
           paginationToken: stringValueOf('pagination_token'),
@@ -259,23 +259,154 @@ class RequestSender extends ParameterHelper {
           userFields: userFields,
         );
       case Endpoint.deleteUsersSourceUserIdMutingTargetUserId:
-        return twitter.users.destroyMute(
+        return await twitter.users.destroyMute(
           userId: requiredStringValueOf('source_user_id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
       case Endpoint.postUsersIdMuting:
-        return twitter.users.createMute(
+        return await twitter.users.createMute(
           userId: requiredStringValueOf('id'),
           targetUserId: requiredStringValueOf('target_user_id'),
         );
       case Endpoint.getUsersIdMuting:
-        return twitter.users.lookupMutingUsers(
+        return await twitter.users.lookupMutingUsers(
           userId: requiredStringValueOf('id'),
           maxResults: intValueOf('max_results'),
           paginationToken: stringValueOf('pagination_token'),
           expansions: userExpansions,
           tweetFields: tweetFields,
           userFields: userFields,
+        );
+      case Endpoint.getListsIdTweets:
+        return await twitter.lists.lookupTweets(
+          listId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: tweetExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+        );
+      case Endpoint.deleteUsersIdFollowedListsListId:
+        return await twitter.lists.destroyFollow(
+          userId: requiredStringValueOf('id'),
+          listId: requiredStringValueOf('list_id'),
+        );
+      case Endpoint.postUsersIdFollowedLists:
+        return await twitter.lists.createFollow(
+          userId: requiredStringValueOf('id'),
+          listId: requiredStringValueOf('list_id'),
+        );
+      case Endpoint.getListsIdFollowers:
+        return await twitter.lists.lookupFollowers(
+          listId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          userFields: userFields,
+        );
+      case Endpoint.getUsersIdFollowedLists:
+        return await twitter.lists.lookupFollowedLists(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: listExpansions,
+          userFields: userFields,
+          listFields: listFields,
+        );
+      case Endpoint.getListsId:
+        return await twitter.lists.lookupById(
+          listId: requiredStringValueOf('id'),
+          expansions: listExpansions,
+          userFields: userFields,
+          listFields: listFields,
+        );
+      case Endpoint.getUsersIdOwnedLists:
+        return await twitter.lists.lookupOwnedBy(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: listExpansions,
+          userFields: userFields,
+          listFields: listFields,
+        );
+      case Endpoint.deleteListsIdMembersUserId:
+        return await twitter.lists.destroyMember(
+          listId: requiredStringValueOf('id'),
+          userId: requiredStringValueOf('user_id'),
+        );
+      case Endpoint.postListsIdMembers:
+        return await twitter.lists.createMember(
+          listId: requiredStringValueOf('id'),
+          userId: requiredStringValueOf('user_id'),
+        );
+      case Endpoint.getListsIdMembers:
+        return await twitter.lists.lookupMembers(
+          listId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: userExpansions,
+          tweetFields: tweetFields,
+          userFields: userFields,
+        );
+      case Endpoint.getUsersIdListMemberships:
+        return await twitter.lists.lookupMemberships(
+          userId: requiredStringValueOf('id'),
+          maxResults: intValueOf('max_results'),
+          paginationToken: stringValueOf('pagination_token'),
+          expansions: listExpansions,
+          userFields: userFields,
+          listFields: listFields,
+        );
+      case Endpoint.deleteListsId:
+        return await twitter.lists.destroyList(
+          listId: requiredStringValueOf('id'),
+        );
+      case Endpoint.postLists:
+        final private = boolValueOf('private') ?? false;
+
+        if (private) {
+          return await twitter.lists.createPrivateList(
+            name: requiredStringValueOf('name'),
+            description: stringValueOf('description'),
+          );
+        }
+
+        return await twitter.lists.createPublicList(
+          name: requiredStringValueOf('name'),
+          description: stringValueOf('description'),
+        );
+      case Endpoint.putListsId:
+        final private = boolValueOf('private') ?? false;
+
+        if (private) {
+          return await twitter.lists.updateListAsPrivate(
+            listId: requiredStringValueOf('id'),
+            name: stringValueOf('name'),
+            description: stringValueOf('description'),
+          );
+        }
+
+        return await twitter.lists.updateListAsPublic(
+          listId: requiredStringValueOf('id'),
+          name: stringValueOf('name'),
+          description: stringValueOf('description'),
+        );
+      case Endpoint.deleteUsersIdPinnedListsListId:
+        return await twitter.lists.destroyPinnedList(
+          userId: requiredStringValueOf('id'),
+          listId: requiredStringValueOf('list_id'),
+        );
+      case Endpoint.postUsersIdPinnedLists:
+        return await twitter.lists.createPinnedList(
+          userId: requiredStringValueOf('id'),
+          listId: requiredStringValueOf('list_id'),
+        );
+      case Endpoint.getUsersIdPinnedLists:
+        return await twitter.lists.lookupPinnedLists(
+          userId: requiredStringValueOf('id'),
+          expansions: listExpansions,
+          userFields: userFields,
+          listFields: listFields,
         );
     }
   }

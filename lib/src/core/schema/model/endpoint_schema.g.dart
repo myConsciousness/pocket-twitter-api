@@ -45,4 +45,5 @@ Map<String, dynamic> _$$_EndpointSchemaToJson(_$_EndpointSchema instance) =>
 const _$ExpansionTypeEnumMap = {
   ExpansionType.tweets: 'tweets',
   ExpansionType.users: 'users',
+  ExpansionType.lists: 'lists',
 };

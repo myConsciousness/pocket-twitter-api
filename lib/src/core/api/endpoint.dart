@@ -24,10 +24,12 @@ class _EndpointStateNotifier extends StateNotifier<Endpoint> {
 
 const _tweetsService = Service.tweets;
 const _usersService = Service.users;
+const _listsService = Service.lists;
 
 const _httpGet = HttpMethod.get;
 const _httpPost = HttpMethod.post;
 const _httpDelete = HttpMethod.delete;
+const _httpPut = HttpMethod.put;
 
 enum Endpoint {
   /// `GET /2/tweets/search/recent`
@@ -217,6 +219,125 @@ enum Endpoint {
     _usersService,
     _httpGet,
     '/2/users/:id/muting',
+  ),
+
+  /// `GET /2/lists/:id/tweets`
+  getListsIdTweets(
+    _listsService,
+    _httpGet,
+    '/2/lists/:id/tweets',
+  ),
+
+  /// `DELETE /2/users/:id/followed_lists/:list_id`
+  deleteUsersIdFollowedListsListId(
+    _listsService,
+    _httpDelete,
+    '/2/users/:id/followed_lists/:list_id',
+  ),
+
+  /// `POST /2/users/:id/followed_lists`
+  postUsersIdFollowedLists(
+    _listsService,
+    _httpPost,
+    '/2/users/:id/followed_lists',
+  ),
+
+  /// `GET /2/lists/:id/followers`
+  getListsIdFollowers(
+    _listsService,
+    _httpGet,
+    '/2/lists/:id/followers',
+  ),
+
+  /// `GET /2/users/:id/followed_lists`
+  getUsersIdFollowedLists(
+    _listsService,
+    _httpGet,
+    '/2/users/:id/followed_lists',
+  ),
+
+  /// `GET /2/lists/:id`
+  getListsId(
+    _listsService,
+    _httpGet,
+    '/2/lists/:id',
+  ),
+
+  /// `GET /2/users/:id/owned_lists`
+  getUsersIdOwnedLists(
+    _listsService,
+    _httpGet,
+    '/2/users/:id/owned_lists',
+  ),
+
+  /// `DELETE /2/lists/:id/members/:user_id`
+  deleteListsIdMembersUserId(
+    _listsService,
+    _httpDelete,
+    '/2/lists/:id/members/:user_id',
+  ),
+
+  /// `POST /2/lists/:id/members`
+  postListsIdMembers(
+    _listsService,
+    _httpPost,
+    '/2/lists/:id/members',
+  ),
+
+  /// `GET /2/lists/:id/members`
+  getListsIdMembers(
+    _listsService,
+    _httpGet,
+    '/2/lists/:id/members',
+  ),
+
+  /// `GET /2/users/:id/list_memberships`
+  getUsersIdListMemberships(
+    _listsService,
+    _httpGet,
+    '/2/users/:id/list_memberships',
+  ),
+
+  /// `DELETE /2/lists/:id`
+  deleteListsId(
+    _listsService,
+    _httpDelete,
+    '/2/lists/:id',
+  ),
+
+  /// `POST /2/lists`
+  postLists(
+    _listsService,
+    _httpPost,
+    '/2/lists',
+  ),
+
+  /// `PUT /2/lists/:id`
+  putListsId(
+    _listsService,
+    _httpPut,
+    '/2/lists/:id',
+  ),
+
+  /// `DELETE /2/users/:id/pinned_lists/:list_id`
+  deleteUsersIdPinnedListsListId(
+    _listsService,
+    _httpDelete,
+    '/2/users/:id/pinned_lists/:list_id',
+  ),
+
+  /// `POST /2/users/:id/pinned_lists`
+  postUsersIdPinnedLists(
+    _listsService,
+    _httpPost,
+    '/2/users/:id/pinned_lists',
+  ),
+
+  /// `GET /2/users/:id/pinned_lists`
+  getUsersIdPinnedLists(
+    _listsService,
+    _httpGet,
+    '/2/users/:id/pinned_lists',
   ),
   ;
 

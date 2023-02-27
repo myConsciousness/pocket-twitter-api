@@ -20,13 +20,18 @@ class ServiceSchema with _$ServiceSchema {
   const factory ServiceSchema({
     required List<EndpointSchema> tweets,
     required List<EndpointSchema> users,
+    required List<EndpointSchema> lists,
   }) = _ServiceSchema;
 
   factory ServiceSchema.fromJson(Map<String, Object?> json) =>
       _$ServiceSchemaFromJson(json);
 
   EndpointSchema endpointOf(final Endpoint endpoint) {
-    for (final endpointSchema in <EndpointSchema>[...tweets, ...users]) {
+    for (final endpointSchema in <EndpointSchema>[
+      ...tweets,
+      ...users,
+      ...lists
+    ]) {
       if (endpoint == endpointSchema.endpoint) {
         return endpointSchema;
       }

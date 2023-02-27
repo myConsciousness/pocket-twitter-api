@@ -25,6 +25,12 @@ _$_ServiceSchema _$$_ServiceSchemaFromJson(Map json) => $checkedCreate(
                   .map((e) => EndpointSchema.fromJson(
                       Map<String, Object?>.from(e as Map)))
                   .toList()),
+          lists: $checkedConvert(
+              'lists',
+              (v) => (v as List<dynamic>)
+                  .map((e) => EndpointSchema.fromJson(
+                      Map<String, Object?>.from(e as Map)))
+                  .toList()),
         );
         return val;
       },
@@ -34,4 +40,5 @@ Map<String, dynamic> _$$_ServiceSchemaToJson(_$_ServiceSchema instance) =>
     <String, dynamic>{
       'tweets': instance.tweets.map((e) => e.toJson()).toList(),
       'users': instance.users.map((e) => e.toJson()).toList(),
+      'lists': instance.lists.map((e) => e.toJson()).toList(),
     };

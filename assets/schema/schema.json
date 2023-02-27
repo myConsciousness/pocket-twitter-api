@@ -862,5 +862,465 @@
         }
       ]
     }
+  ],
+  "lists": [
+    {
+      "endpoint": "GET#/2/lists/:id/tweets",
+      "expansion_type": "tweets",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/2/users/:id/followed_lists/:list_id",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/users/:id/followed_lists",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/lists/:id/followers",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/users/:id/followed_lists",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "list.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/lists/:id",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "list.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/users/:id/owned_lists",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "list.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/2/lists/:id/members/:user_id",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/lists/:id/members",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/lists/:id/members",
+      "expansion_type": "users",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "tweet.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/users/:id/list_memberships",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "max_results",
+          "type": "integer",
+          "required": false,
+          "allowed_range": {
+            "start": 1,
+            "end": 100
+          }
+        },
+        {
+          "name": "pagination_token",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "list.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/2/lists/:id",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/lists",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write", "list.write"],
+      "parameters": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "private",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "PUT#/2/lists/:id",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "private",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "endpoint": "DELETE#/2/users/:id/pinned_lists/:list_id",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "POST#/2/users/:id/pinned_lists",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.write"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "endpoint": "GET#/2/users/:id/pinned_lists",
+      "expansion_type": "lists",
+      "scopes": ["tweet.read", "users.read", "list.read"],
+      "parameters": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expansions",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "user.fields",
+          "type": "picklist",
+          "required": false
+        },
+        {
+          "name": "list.fields",
+          "type": "picklist",
+          "required": false
+        }
+      ]
+    }
   ]
 }

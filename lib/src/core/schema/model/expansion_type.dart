@@ -5,4 +5,5 @@
 enum ExpansionType {
   tweets,
   users,
+  lists,
 }

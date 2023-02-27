@@ -48,6 +48,9 @@ abstract class ParameterHelper {
   List<UserExpansion>? get userExpansions =>
       expansionsOf(UserExpansion.valueOf);
 
+  List<ListExpansion>? get listExpansions =>
+      expansionsOf(ListExpansion.valueOf);
+
   List<T>? expansionsOf<T extends Serializable>(
     final T Function(String value) valueOf,
   ) =>
@@ -58,6 +61,9 @@ abstract class ParameterHelper {
 
   List<UserField>? get userFields =>
       serializedValuesOf(UserField.valueOf, 'user.fields');
+
+  List<ListField>? get listFields =>
+      serializedValuesOf(ListField.valueOf, 'list.fields');
 
   List<PlaceField>? get placeFields =>
       serializedValuesOf(PlaceField.valueOf, 'place.fields');

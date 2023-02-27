@@ -60,10 +60,12 @@ class _EndpointStateNotifier extends StateNotifier<Endpoint> {
 
 const _tweetsService = Service.tweets;
 const _usersService = Service.users;
+const _listsService = Service.lists;
 
 const _httpGet = HttpMethod.get;
 const _httpPost = HttpMethod.post;
 const _httpDelete = HttpMethod.delete;
+const _httpPut = HttpMethod.put;
 
 enum Endpoint {
 ${elements.join('\n')}
@@ -132,6 +134,8 @@ String _getService(final String service) {
       return '_tweetsService';
     case 'users':
       return '_usersService';
+    case 'lists':
+      return '_listsService';
     default:
       throw UnsupportedError('Unsupported value [$service].');
   }
@@ -145,6 +149,8 @@ String _getHttpMethod(final String httpMethod) {
       return '_httpPost';
     case 'DELETE':
       return '_httpDelete';
+    case 'PUT':
+      return '_httpPut';
     default:
       throw UnsupportedError('Unsupported value [$httpMethod].');
   }

@@ -60,7 +60,7 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
             return;
           }
 
-          _fetchAccessToken(ref).then(
+          _fetchAccessToken(context, ref).then(
             (accessToken) => showDialog(
               context: context,
               builder: (context) => FutureProgressDialog(
@@ -109,7 +109,58 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
         (key, value) => MapEntry(key, value.text),
       );
 
-  Future<String> _fetchAccessToken(final WidgetRef ref) async {
+  Future<String> _fetchAccessToken(
+    final BuildContext context,
+    final WidgetRef ref,
+  ) async {
+    final scopes = _schema.endpointOf(ref.watch(endpointStateProvider)).scopes;
+
+    if (scopes.isEmpty) {
+      //! When endpoint needs App-Only token.
+      final controller = TextEditingController();
+      final dialog = AwesomeDialog(
+        context: context,
+        dialogType: DialogType.info,
+        animType: AnimType.rightSlide,
+        title: 'Enter App-Only Bearer Token',
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(controller: controller),
+            ],
+          ),
+        ),
+        btnOkOnPress: () async {
+          if (controller.text.isEmpty) {
+            await AwesomeDialog(
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              title: 'Empty',
+              desc: 'Empty',
+              btnOkOnPress: () {
+                // Do Nothing.
+              },
+            ).show();
+
+            return;
+          }
+
+          Navigator.pop(context);
+        },
+        onDismissCallback: (type) {
+          // Do Nothing.
+        },
+        autoDismiss: false,
+      );
+
+      await dialog.show();
+
+      return controller.text;
+    }
+
     final tokens = ref.watch(secretStateProvider);
 
     if (ref.watch(refreshTokenStateProvider).isEmpty) {
@@ -123,7 +174,7 @@ class PlaygroundHomeFloatingActionButton extends ConsumerWidget {
       final response = await oauthClient.executeAuthCodeFlowWithPKCE(
         scopes: [
           oauth2.Scope.offlineAccess,
-          ..._schema.endpointOf(ref.watch(endpointStateProvider)).scopes,
+          ...scopes,
         ],
       );
 
